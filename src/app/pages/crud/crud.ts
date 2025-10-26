@@ -157,7 +157,7 @@ interface ExportColumn {
                     </div>
                     <div>
                         <label for="description" class="block font-bold mb-3">Description</label>
-                        <textarea id="description" pTextarea [(ngModel)]="product.description" required rows="3" cols="20" fluid></textarea>
+                        <textarea id="description" pTextarea [(ngModel)]="product['description']" required rows="3" cols="20" fluid></textarea>
                     </div>
 
                     <div>

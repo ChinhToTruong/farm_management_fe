@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Form, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
+import { AuthService } from '@/pages/service/auth.service';
+import { Toast } from 'primeng/toast';
+import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator],
+    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, ReactiveFormsModule],
     template: `
         <app-floating-configurator />
         <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-screen overflow-hidden">
@@ -40,22 +43,22 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
                             <span class="text-muted-color font-medium">Sign in to continue</span>
                         </div>
 
-                        <div>
+                        <form [formGroup]="formLogin" (ngSubmit)="onLogin()">
                             <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                            <input pInputText id="email1" type="text" placeholder="Email address" class="w-full md:w-120 mb-8" [(ngModel)]="email" />
+                            <input pInputText id="email1" formControlName="email" type="text" placeholder="Email address" class="w-full md:w-120 mb-8" [(ngModel)]="email" />
 
                             <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
-                            <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
+                            <p-password id="password1" formControlName="password" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
 
                             <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                                 <div class="flex items-center">
-                                    <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
+                                    <p-checkbox  formControlName="checked" [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
                                     <label for="rememberme1">Remember me</label>
                                 </div>
                                 <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
                             </div>
-                            <p-button label="Sign In" styleClass="w-full" routerLink="/"></p-button>
-                        </div>
+                            <p-button label="Sign In" styleClass="w-full" type="submit" [disabled]="formLogin.invalid"></p-button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -68,4 +71,32 @@ export class Login {
     password: string = '';
 
     checked: boolean = false;
+
+    private fb = inject(FormBuilder);
+    private auth = inject(AuthService);
+    private router = inject(Router);
+
+    formLogin = this.fb.group({
+        email: ['', Validators.required],
+        password: ['', Validators.required],
+        checked: [true,Validators.required]
+    })
+
+    onLogin() {
+        if (this.formLogin.valid) {
+            const { email, password } = this.formLogin.value;
+            this.auth.login(email!, password!).subscribe({
+                next: (response) => {
+                    if (response.data) {
+                        const accessToken = response.data.accessToken;
+                        const refreshToken = response.data.refreshToken;
+                        localStorage.setItem('token', accessToken);
+                        localStorage.setItem('refreshToken', refreshToken);
+                        this.router.navigate(['/']);
+                    }
+                },
+                error: error => {}
+            });
+        }
+    }
 }
