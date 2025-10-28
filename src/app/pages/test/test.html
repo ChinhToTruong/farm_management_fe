@@ -1,0 +1,11 @@
+<app-table
+    [title]="title"
+    [columns]="columns"
+    [data]="data"
+    [showExport]="false"
+    [id]="'id'"
+    [searchField]="'id'"
+    (selectionChanged)="selectionChange($event)"
+    (onDeleteList)="onDeleteList($event)"
+    [total]="total"
+/>

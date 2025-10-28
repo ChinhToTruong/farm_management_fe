@@ -1,0 +1,27 @@
+.my-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto;
+    display: block;
+
+    th,
+    td {
+        border: 1px #ccc;
+        padding: 0.5rem;
+        white-space: nowrap;
+    }
+
+    .sticky-left {
+        position: sticky;
+        left: 0;
+        background: #fff;
+        z-index: 2; // ưu tiên hiển thị trên các cột khác
+    }
+
+    .sticky-right {
+        position: sticky;
+        right: 0;
+        background: #fff;
+        z-index: 2;
+    }
+}
