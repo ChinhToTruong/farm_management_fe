@@ -88,14 +88,18 @@ export class Login {
             this.auth.login(email!, password!).subscribe({
                 next: (response) => {
                     if (response.data) {
-                        const accessToken = response.data.accessToken;
-                        const refreshToken = response.data.refreshToken;
+                        const accessToken = response?.data?.accessToken;
+                        const refreshToken = response?.data?.refreshToken;
+                        const user = response?.data?.user;
                         localStorage.setItem('token', accessToken);
                         localStorage.setItem('refreshToken', refreshToken);
+                        localStorage.setItem('user', JSON.stringify(user));
                         this.router.navigate(['/']);
                     }
                 },
-                error: error => {}
+                error: error => {
+                    console.log(error);
+                }
             });
         }
     }

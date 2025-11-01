@@ -52,6 +52,7 @@ export class AuthService {
                     // Lưu access token mới
                     localStorage.setItem('token', res.data.accessToken);
                     localStorage.setItem('refreshToken', res.data.refreshToken);
+                    localStorage.setItem('user', JSON.stringify(res.data.user));
                 })
             );
     }

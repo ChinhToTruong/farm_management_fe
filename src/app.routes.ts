@@ -7,6 +7,7 @@ import { Notfound } from './app/pages/notfound/notfound';
 import { AuthGuard } from '@/commons/guards/auth.guard';
 import { AppTable } from '@/layout/component/table/table';
 import { Test } from '@/pages/test/test';
+import { EditProfile } from '@/pages/users/edit-profile/edit-profile';
 
 export const appRoutes: Routes = [
     {
@@ -19,6 +20,13 @@ export const appRoutes: Routes = [
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ],
         canActivate: [AuthGuard],
+    },
+    {
+        path: 'users',
+        component: AppLayout,
+        children: [
+            {path: 'profile', component: EditProfile}
+        ]
     },
     {
         path: 'test',

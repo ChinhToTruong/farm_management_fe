@@ -1,10 +1,13 @@
-import { Component, EventEmitter, inject, OnInit, TemplateRef, viewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppTable } from '@/layout/component/table/table';
 import { Column } from '@/commons/type/app.table.type';
 import { MessageService } from 'primeng/api';
 import { ToastService } from '@/pages/service/toast.service';
-
+import { User, UserService } from '@/pages/service/user.service';
+import { FilterRequest, SearchRequest } from '@/pages/service/base.service';
+import { BaseTableService } from '@/pages/service/base.table.service';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -14,21 +17,24 @@ import { ToastService } from '@/pages/service/toast.service';
     imports: [
         CommonModule,
         AppTable
-    ],
-    providers: [
-        MessageService,
     ]
 })
-export class Test implements OnInit {
+export class Test extends BaseTableService<User> implements OnInit {
     title!: string;
     data!: any[];
     columns!: Column[];
     total: number = 100;
 
     toast = inject(ToastService);
+    message = inject(MessageService)
+
+    constructor(protected userService: UserService) {
+        super(userService);
+    }
 
     ngOnInit() {
 
+        this.toast.success('Hello World!');
         this.title = 'Test';
         this.columns= [
             {
@@ -42,7 +48,7 @@ export class Test implements OnInit {
             },
             {
                 header: 'Ngày sinh',
-                field: 'birthDate',
+                field: 'dob',
                 type: 'date',
                 operator: 'equal',
                 width: '150px',
@@ -51,8 +57,26 @@ export class Test implements OnInit {
                 customExportHeader: 'Date of Birth', // tùy chọn
             },
             {
-                header: 'Phòng ban',
-                field: 'department',
+                header: 'Email',
+                field: 'email',
+                type: 'select',
+                operator: 'equal',
+                width: '180px',
+                minWidth: '150px',
+                sortable: false,
+            },
+            {
+                header: 'Số điện thoại',
+                field: 'phone',
+                type: 'select',
+                operator: 'equal',
+                width: '180px',
+                minWidth: '150px',
+                sortable: false,
+            },
+            {
+                header: 'Trạng thái',
+                field: 'status',
                 type: 'select',
                 operator: 'equal',
                 width: '180px',
@@ -61,46 +85,34 @@ export class Test implements OnInit {
             },
         ];
 
-        this.data= [
-            {
-                id: 1,
-                name: 'Nguyễn Văn A',
-                birthDate: '1990-01-15',
-                department: 'Kế toán',
-            },
-            {
-                id: 2,
-                name: 'Trần Thị B',
-                birthDate: '1985-07-20',
-                department: 'Nhân sự',
-            },
-            {
-                id: 3,
-                name: 'Lê Văn C',
-                birthDate: '1992-03-10',
-                department: 'IT',
-            },
-            {
-                id: 4,
-                name: 'Phạm Thị D',
-                birthDate: '1998-11-05',
-                department: 'Marketing',
-            },
-            {
-                id: 5,
-                name: 'Hoàng Văn E',
-                birthDate: '1995-09-25',
-                department: 'Bán hàng',
-            },
-        ]
+        this.filter()
     }
 
     selectionChange(item: any[]){
-        console.log(item);
-        this.toast.success("test")
+        this.toast.success("heeelllo")
+        console.log("chay roi ne");
     }
 
-    onDeleteList(ids: any[]) {
-        console.log(ids);
+    filter(){
+        const params: SearchRequest = {
+            pageNo: 0,
+            pageSize: 10,
+            filters: this.filters,
+            sorts: [
+                {
+                    field: 'createdAt',
+                    direction: 'DESC',
+                }
+            ]
+        }
+        this.userService.search(params).subscribe({
+            next: (response: any) => {
+                console.log(response);
+                this.data = response.data.content
+            },
+            error: (err: any) => {
+                console.log(err);
+            }
+        })
     }
 }

@@ -9,6 +9,8 @@ import { AuthInterceptor } from '@/commons/interceptors/auth.interceptor';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MessageModule } from 'primeng/message';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -18,6 +20,6 @@ export const appConfig: ApplicationConfig = {
         provideAnimationsAsync(),
         providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } } }),
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-        MessageService
+        MessageService,
     ]
 };

@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Table, TableModule } from 'primeng/table';
-import { FormGroup, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
@@ -30,29 +30,31 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Product, ProductService } from '@/pages/service/product.service';
 import { Column, ExportColumn } from '@/commons/type/app.table.type';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-table',
-  imports: [
-    CommonModule,
-    TableModule,
-    FormsModule,
-    ButtonModule,
-    RippleModule,
-    ToastModule,
-    ToolbarModule,
-    RatingModule,
-    InputTextModule,
-    TextareaModule,
-    SelectModule,
-    RadioButtonModule,
-    InputNumberModule,
-    DialogModule,
-    TagModule,
-    InputIconModule,
-    IconFieldModule,
-    ConfirmDialogModule
-  ],
+    imports: [
+        CommonModule,
+        TableModule,
+        FormsModule,
+        ButtonModule,
+        RippleModule,
+        ToastModule,
+        ToolbarModule,
+        RatingModule,
+        InputTextModule,
+        TextareaModule,
+        SelectModule,
+        RadioButtonModule,
+        InputNumberModule,
+        DialogModule,
+        TagModule,
+        InputIconModule,
+        IconFieldModule,
+        ConfirmDialogModule,
+        ReactiveFormsModule
+    ],
     templateUrl: './table.html',
     styleUrl: './table.scss',
     providers: [MessageService, ProductService, ConfirmationService]
@@ -67,7 +69,7 @@ export class AppTable implements OnInit {
     @Output("onEdit") onEditEvent = new EventEmitter<any>;
     @Output("onDelete") onDeleteEvent = new EventEmitter<any>;
     @Output("onDeleteList") onDeleteListEvent = new EventEmitter<any[]>;
-    @Output("onSearch") onSearchEvent = new EventEmitter<any>;
+    @Output("onSearch") onSearchEvent = new EventEmitter<{field: string, operator: string, value: string}>;
     @Output("onNew") onNewEvent = new EventEmitter<any>;
     @Output("onExport") onExportEvent = new EventEmitter<any>;
     @Output() selectionChanged = new EventEmitter<any[]>();
@@ -76,7 +78,7 @@ export class AppTable implements OnInit {
     @Input() width = '450px';
     @Input() showExport = true;
 
-    @Input() rowHover: boolean = true;
+    @Input() rowHover: boolean = false;
     @Input() paginator: boolean = true;
 
     @Input() searchOperator:string = "like";
@@ -89,6 +91,8 @@ export class AppTable implements OnInit {
 
     @Input()total: number = 10;
     pageSize!: number;
+    searchControl = new FormControl('');
+    searchSubject = new Subject<{field: string, operator: string, value: string}>();
 
 
 
@@ -97,7 +101,18 @@ export class AppTable implements OnInit {
     }
 
     ngOnInit() {
-
+        this.searchControl.valueChanges
+            .pipe(
+                debounceTime(400),
+                distinctUntilChanged()
+            )
+            .subscribe((value) => {
+                this.onSearchEvent.emit({
+                    field: this.searchField,      // hoặc cột bạn muốn lọc
+                    operator: this.searchOperator,  // có thể linh động
+                    value: value || '',
+                });
+            });
     }
 
     onPageChange(item: any){
@@ -108,15 +123,12 @@ export class AppTable implements OnInit {
         this.selectedItems = selected;
         this.selectedIds = selected.map(item => item[this.id]);
         this.selectionChanged.emit(this.selectedIds);
-
-        console.log('Selected items:', this.selectedItems);
-        console.log('Selected IDs:', this.selectedIds);
     }
 
 
     onGlobalFilter(event: Event) {
         const value = (event.target as HTMLInputElement).value;
-        this.onSearchEvent.emit({
+        this.searchSubject.next({
             field: this.searchField,
             operator: this.searchOperator,
             value
@@ -140,5 +152,4 @@ export class AppTable implements OnInit {
         this.onDeleteEvent.emit(item);
     }
 
-    protected readonly top = top;
 }

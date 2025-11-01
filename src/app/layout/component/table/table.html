@@ -34,7 +34,7 @@
             <h5 class="m-0">{{ title }}</h5>
             <p-iconfield>
                 <p-inputicon class="pi pi-search" />
-                <input #searchInput pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Search..." />
+                <input #searchInput [formControl]="searchControl" pInputText type="text" placeholder="Search..." />
             </p-iconfield>
         </div>
     </ng-template>
