@@ -1,3 +1,71 @@
-<div class="grid grid-cols-12 gap-8">
-    
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-8 bg-white rounded-xl shadow-lg p-6">
+    <div class="flex flex-col gap-4 col-span-12">
+        <span class="text-xl font-semibold mb-4">User Information</span>
+        <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Avatar chiếm full chiều ngang -->
+            <div class="col-span-1 md:col-span-2 flex justify-center mb-4">
+                <p-avatar
+                    image="https://imgs.search.brave.com/a2SiQTWqP6KrTkh3KMvdlanetjpIuJKAnFTE0Ggy4d4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4t/bWVkaWEuc2ZvcnVt/LnZuL3N0b3JhZ2Uv/YXBwL21lZGlhL2Fu/aC1kZXAtMzAuanBn"
+                    size="xlarge" shape="circle"></p-avatar>
+            </div>
+            <!-- Name -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="name" autocomplete="off" formControlName="name" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="name">Name</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+                    Name is required.
+                </small>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="email" autocomplete="off" formControlName="email" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="email">Email</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                    Please enter a valid email.
+                </small>
+            </div>
+
+            <!-- Phone -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="phone" autocomplete="off" formControlName="phone" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="phone">Phone</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+                    Phone must be 10 digits starting with 0.
+                </small>
+            </div>
+
+            <!-- Username -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="username" autocomplete="off" formControlName="username" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="username">User Name</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+                    Username is required.
+                </small>
+            </div>
+
+            <p-select [options]="status" placeholder="Status" class="w-full md:w-56 m-2" formControlName="status"
+                [disabled]="!editMode" />
+
+            <!-- Buttons -->
+            <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+                <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()">
+                </p-button>
+                <p-button *ngIf="editMode" type="submit" label="Save"/>
+
+            </div>
+        </form>
+    </div>
 </div>

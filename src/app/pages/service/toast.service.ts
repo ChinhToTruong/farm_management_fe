@@ -31,7 +31,7 @@ export class ToastService {
         this.messageService.add({
             detail: message,
             summary: "Warning",
-            severity: 'warning',
+            severity: 'warn',
         })
     }
 
