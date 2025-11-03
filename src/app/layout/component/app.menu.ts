@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
 import { MenuService } from '@/cores/services/menu.service';
+import { menuConfig, RoleMenuItem } from '@/cores/config/menu.config';
 
 @Component({
     selector: 'app-menu',
@@ -12,7 +13,7 @@ import { MenuService } from '@/cores/services/menu.service';
     template: `
         <ul class="layout-menu">
             <ng-container *ngFor="let item of model; let i = index">
-                <div class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 cursor-pointer">
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer">
                     <span [class]="item.icon"></span>
                     <li
                         app-menuitem
@@ -27,7 +28,7 @@ import { MenuService } from '@/cores/services/menu.service';
         </ul> `
 })
 export class AppMenu {
-    model: any[] = [];
+    model: RoleMenuItem[] = [];
     menuService = inject(MenuService);
 
     ngOnInit() {
