@@ -17,7 +17,7 @@ export class ToastService {
     }
 
 
-    public error(message: string): void {
+    public error(message: string = 'Error'): void {
         console.log(message);
         this.messageService.add({
             detail: message,

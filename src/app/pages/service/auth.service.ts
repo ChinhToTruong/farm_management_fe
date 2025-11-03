@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { ResponseData } from './base.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -55,5 +56,9 @@ export class AuthService {
                     localStorage.setItem('user', JSON.stringify(res.data.user));
                 })
             );
+    }
+
+    current(): Observable<ResponseData<any>>{
+        return this.http.get<ResponseData<any>>(`${this.apiUrl}/auth/current`)
     }
 }

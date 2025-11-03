@@ -46,9 +46,4 @@ export class UserService extends BaseService<User>{
     constructor(http: HttpClient) {
         super(http,"users");
     }
-
-
-    current(): Observable<ResponseData<any>>{
-        return this.http.get<ResponseData<any>>(`${this.baseUrl}/current`)
-    }
 }
