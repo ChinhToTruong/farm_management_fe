@@ -5,6 +5,7 @@ import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
 import { MenuService } from '@/cores/services/menu.service';
 import { menuConfig, RoleMenuItem } from '@/cores/config/menu.config';
+import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 
 @Component({
     selector: 'app-menu',

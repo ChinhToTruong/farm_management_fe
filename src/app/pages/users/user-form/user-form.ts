@@ -1,46 +1,40 @@
-import { Component, EventEmitter, Inject, inject, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
-import { InputTextModule } from 'primeng/inputtext';
-import { FloatLabel } from "primeng/floatlabel";
-import { ButtonModule } from "primeng/button";
-import { CommonModule } from '@angular/common';
-import { Select } from 'primeng/select';
-import { AvatarModule } from "primeng/avatar";
-import { UserService } from '@/pages/service/user.service';
-import { ToastService } from '@/pages/service/toast.service';
-import { FileService } from '@/pages/service/file.service';
 import { AuthService } from '@/pages/service/auth.service';
-import { FileUpload } from "primeng/fileupload";
-import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+import { FileService } from '@/pages/service/file.service';
+import { ToastService } from '@/pages/service/toast.service';
+import { UserService } from '@/pages/service/user.service';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
+import { FileUpload } from 'primeng/fileupload';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
 import { take } from 'rxjs';
-import { UserForm } from "../user-form/user-form";
+
 
 
 interface UploadEvent {
     originalEvent: Event;
     files: File[];
 }
-
 @Component({
-    selector: 'app-edit-profile',
-    imports: [
+  selector: 'app-user-form',
+  imports: [
     ReactiveFormsModule,
     CommonModule,
     FloatLabel, InputTextModule, FormsModule, Select,
     ButtonModule,
     AvatarModule,
-    FileUpload,
-    UserForm
+    FileUpload
 ],
-    templateUrl: './edit-profile.html',
-    styleUrl: './edit-profile.scss',
-    providers:[DynamicDialogRef, DynamicDialogConfig]
+  templateUrl: './user-form.html',
+  styleUrl: './user-form.scss',
 })
-export class EditProfile implements OnInit{
-    user: any; // user từ backend hoặc localStorage
+export class UserForm {
+  user: any; // user từ backend hoặc localStorage
     avatar!: string;
     editMode: boolean = false;
     loading: boolean = false;

@@ -1,0 +1,90 @@
+
+    <div class="flex flex-col gap-4 col-span-12">
+        <span class="text-xl font-semibold mb-4">User Information</span>
+        <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="image-container col-span-1 md:col-span-2 flex flex-col items-center">
+                <!-- Hiển thị ảnh đang có hoặc ảnh default -->
+                <img [src]=" (!!avatar ? 'data:image/jpeg;base64,' + avatar : 'assets/images/default-avatar.png')"
+                    alt="Avatar" class="avatar w-36 h-36 rounded-full object-cover shadow-md m-2" />
+
+                <!-- Khi ở chế độ Edit thì cho phép chọn file -->
+                <!-- <input *ngIf="editMode" type="file" accept="image/*" (change)="onFileSelected($event)" /> -->
+                @if(editMode){
+                <p-fileupload mode="basic" name="demo[]" chooseIcon="pi pi-upload" accept="image/*"
+                    maxFileSize="1000000" class="m-2" (onSelect)="onFileSelected($event)" [auto]="true"
+                    chooseLabel="Browse" />
+                }
+
+            </div>
+            <!-- Name -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="name" autocomplete="off" formControlName="name" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="name">Name</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+                    Name is required.
+                </small>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="email" autocomplete="off" formControlName="email" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="email">Email</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                    Please enter a valid email.
+                </small>
+            </div>
+
+            <!-- password -->
+            @if(mode == 'create'){<div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="password" autocomplete="off" formControlName="password" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="password">password</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                    Please enter a valid password.
+                </small>
+            </div>}
+
+            <!-- Phone -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="phone" autocomplete="off" formControlName="phone" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="phone">Phone</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+                    Phone must be 10 digits starting with 0.
+                </small>
+            </div>
+
+            <!-- Username -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="username" autocomplete="off" formControlName="username" class="w-full"
+                        [readonly]="!editMode" />
+                    <label for="username">User Name</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2" *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+                    Username is required.
+                </small>
+            </div>
+
+            <p-select [options]="status" placeholder="Status" class="w-full md:w-56 m-2" formControlName="status"
+                [disabled]="!editMode" />
+            @if (!readonly) {
+            <!-- Buttons -->
+                <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+                    <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()">
+                    </p-button>
+                    <p-button *ngIf="editMode" type="submit" label="Save" />
+                </div>
+            }
+        </form>
+    </div>

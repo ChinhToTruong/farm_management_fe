@@ -25,7 +25,7 @@ export class Test extends BaseTableService<User> implements OnInit {
     columns!: Column[];
     total: number = 100;
 
-    toast = inject(ToastService);
+    
     message = inject(MessageService)
 
     constructor(protected userService: UserService) {

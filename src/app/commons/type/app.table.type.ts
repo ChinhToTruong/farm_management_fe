@@ -3,10 +3,10 @@ export interface Column {
     field: string;
     type: 'date' | 'text' | 'select';
     operator: 'like' | 'equal';
-    width: string;
-    minWidth: string;
+    width?: string;
+    minWidth?: string;
     customExportHeader?: string;
-    sortable: boolean;
+    sortable?: boolean;
 }
 
 export interface ExportColumn {

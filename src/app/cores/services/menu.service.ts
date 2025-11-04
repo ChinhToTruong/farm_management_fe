@@ -10,7 +10,6 @@ export class MenuService {
 
         const user = JSON.parse(userJson);
         const roles: UserRole[] = user.authorities?.map((a: {authority: string}) => a.authority) || [];
-
         return this.filterMenuByRoles(menuConfig, roles);
     }
 

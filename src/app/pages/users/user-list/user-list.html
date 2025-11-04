@@ -1,15 +1,11 @@
-<app-table
-    [title]="title"
-    [columns]="columns"
-    [data]="data"
-    [showExport]="true"
-    [id]="id"
-    [searchField]="'name'"
-    (selectionChanged)="selectionChange($event)"
-    (onDeleteList)="onDeleteList($event)"
-    (onDelete)="onDelete($event)"
-    (onSearch)="onSearch($event)"
-    (onNew)="onNew()"
-    [rowHover]="true"
-    [total]="total"
-/>
+<app-table [title]="title" [columns]="columns" [data]="data" [showExport]="true" [id]="id" [searchField]="'name'"
+    (selectionChanged)="selectionChange($event)" (onDeleteList)="onDeleteList($event)" (onDelete)="onDelete($event)"
+    (onSearch)="onSearch($event)" (onNew)="onNew()" [rowHover]="true" [total]="total" />
+
+
+
+<p-dialog [modal]="true" [(visible)]="visible" [style]="{ width: '100rem' }">
+    @if(visible){
+        <app-user-form mode="create" (onSubmit)="onSubmit()"/>
+    }
+</p-dialog>

@@ -1,13 +1,17 @@
 import { BaseService, FilterRequest, SearchRequest } from '@/pages/service/base.service';
+import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
+import { ToastService } from './toast.service';
 
-export class BaseTableService<T> {
-    id: string = 'id';
-    filters!: FilterRequest[];
-    pageNo: number = 1;
-    pageSize: number = 10;
+export abstract class BaseTableService<T> {
+    protected id: string = 'id';
+    protected filters!: FilterRequest[];
+    protected pageNo: number = 1;
+    protected pageSize: number = 10;
+    toast = inject(ToastService)
     constructor(protected service: BaseService<T>) {
     }
+
 
 
 
@@ -15,10 +19,10 @@ export class BaseTableService<T> {
 
         this.service.delete(item.id).subscribe({
             next: data => {
-                console.log(data);
+                this.toast.success("Xoá dữ liệu thành công")
             },
             error: err => {
-                console.log(err);
+                this.toast.error(err)
             }
         })
     }
@@ -26,11 +30,11 @@ export class BaseTableService<T> {
     onDeleteList(items: any[]){
         const ids = items.map(item => item.id);
         this.service.deleteList(ids).subscribe({
-            next: data => {
-                console.log(data);
+             next: data => {
+                this.toast.success("Xoá dữ liệu thành công")
             },
             error: err => {
-                console.log(err);
+                this.toast.error(err)
             }
         })
     }
@@ -49,13 +53,8 @@ export class BaseTableService<T> {
             ]
         }
         console.log(params);
-        this.service.search(par).subscribe({
-            next: data => {
-                console.log(data);
-            },
-            error: err => {
-                console.log(err);
-            }
-        })
+        this.filter()
     }
+
+    abstract filter(): any;
 }

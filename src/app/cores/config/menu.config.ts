@@ -10,7 +10,7 @@ export interface RoleMenuItem extends MenuItem {
 
 export const menuConfig : RoleMenuItem[] =  [
     {
-        label: 'Trang chủ', icon: 'pi pi-fw pi-home', routerLink: ['/'], roles: ['ADMIN', 'FARMER']
+        label: 'Trang chủ', icon: 'pi pi-fw pi-home', routerLink: ['/'], roles: ['ADMIN', 'FARMER', 'ENGINEER']
     },
     {
         label: 'Quản lý người dùng', icon: 'pi pi-fw pi-users', routerLink: ['/users'], roles: ['FARMER']
