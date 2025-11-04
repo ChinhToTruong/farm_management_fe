@@ -13,6 +13,8 @@ import { FileService } from '@/pages/service/file.service';
 import { AuthService } from '@/pages/service/auth.service';
 import { FileUpload } from "primeng/fileupload";
 import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+import { ActivatedRoute } from '@angular/router';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 interface UploadEvent {
     originalEvent: Event;
@@ -37,6 +39,9 @@ export class EditProfile implements OnInit{
     avatar!: string;
     editMode: boolean = false;
     loading: boolean = false;
+    readonly : boolean = false;
+    id!: number;
+    mode!: string;
 
     status!: string[];
 
@@ -46,46 +51,92 @@ export class EditProfile implements OnInit{
     authService = inject(AuthService)
     fileService = inject(FileService)
     toast = inject(ToastService);
+    activeRouter = inject(ActivatedRoute)
 
-    constructor(private fb: FormBuilder) { }
+    constructor(private fb: FormBuilder, public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
 
     ngOnInit(): void {
-        this.loading = false;
-        this.editMode = false;
+
+        const data = this.config.data;
         this.status = ['ACTIVE', 'INACTIVE']
-                this.form = this.fb.group({
-            username: [this.user?.username || '', Validators.required],
-            name: [this.user?.name || '', Validators.required],
-            email: [this.user?.email || '', [Validators.required, Validators.email]],
-            phone: [this.user?.phone || '', Validators.pattern(/^0[0-9]{9}$/)],
-            status: [this.user?.status || '', Validators.required],
-            dob: []
-        });
-        this.authService.current().subscribe({
-            next: res => {
-                this.user = res.data
-                this.form.patchValue({
-                    username: this.user?.username,
-                    name: this.user?.name,
-                    email: this.user?.email,
-                    phone: this.user?.phone,
-                    dob: this.user?.dob,
-                    status: this.user?.status,
-                })
-            },
-            error: err => this.toast.error()
-        });
-        if(this.user?.avatar !== undefined){
-            
-            debugger
-            this.fileService.getFile(this.user.avatar).subscribe({
-                next: res => {
-                    this.avatar = res.data.base64
-                },
-                error: err => this.toast.error()
-            })
+        this.mode = data.mode || 'update';
+        if (data && data.mode == 'create'){
+            this.readonly = false
+            this.editMode = true;
+            this.form = this.fb.group({
+                username: [this.user?.username || '', Validators.required],
+                name: [this.user?.name || '', Validators.required],
+                email: [this.user?.email || '', [Validators.required, Validators.email]],
+                phone: [this.user?.phone || '', Validators.pattern(/^0[0-9]{9}$/)],
+                status: [this.user?.status || '', Validators.required],
+                dob: []
+            });
         }
-        this.form.disable()
+        else {
+            this.loading = false;
+            this.editMode = false;
+            this.activeRouter.paramMap.subscribe(params => {
+                this.id = +params.get('id')!;
+                if (this.id) {
+                    this.readonly = true;
+                }
+            });
+
+            this.form = this.fb.group({
+                username: [this.user?.username || '', Validators.required],
+                name: [this.user?.name || '', Validators.required],
+                email: [this.user?.email || '', [Validators.required, Validators.email]],
+                phone: [this.user?.phone || '', Validators.pattern(/^0[0-9]{9}$/)],
+                status: [this.user?.status || '', Validators.required],
+                dob: []
+            });
+
+            if (this.readonly){
+
+                this.userService.getById(this.id).subscribe({
+                    next: res => {
+                        this.user = res.data
+                        this.form.patchValue({
+                            username: this.user?.username,
+                            name: this.user?.name,
+                            email: this.user?.email,
+                            phone: this.user?.phone,
+                            dob: this.user?.dob,
+                            status: this.user?.status,
+                        })
+                    },
+                    error: err => this.toast.error()
+                })
+            }else {
+                this.authService.current().subscribe({
+                    next: res => {
+                        this.user = res.data
+                        this.form.patchValue({
+                            username: this.user?.username,
+                            name: this.user?.name,
+                            email: this.user?.email,
+                            phone: this.user?.phone,
+                            dob: this.user?.dob,
+                            status: this.user?.status,
+                        })
+                    },
+                    error: err => this.toast.error()
+                });
+            }
+
+            if(this.user?.avatar !== undefined){
+
+                debugger
+                this.fileService.getFile(this.user.avatar).subscribe({
+                    next: res => {
+                        this.avatar = res.data.base64
+                    },
+                    error: err => this.toast.error()
+                })
+            }
+            this.form.disable()
+        }
+
     }
 
     toggleEdit() {
@@ -95,6 +146,7 @@ export class EditProfile implements OnInit{
         } else {
             this.form.disable();
         }
+        this.ref.close();
     }
 
     submit() {
@@ -103,24 +155,35 @@ export class EditProfile implements OnInit{
             this.editMode = true
             this.form.markAllAsTouched();
         }
-
         else {
             this.editMode = false;
             this.loading = true;
             const updatedUser = {
                 ...this.form.value,
-                id: this.user.id
+                id: this.user?.id || null
             };
 
-            console.log()
+            if (this.mode == 'create') {
+                console.log("create");
+                this.userService.create(updatedUser).subscribe({
+                    next: res => {
+                        localStorage.setItem('user', JSON.stringify(res?.data))
+                        this.toast.success('Cập nhật thông tin thành công!')
+                    },
+                    error: e => console.log(e)
+                })
+            }else {
+                console.log('update');
+                this.userService.update(updatedUser).subscribe({
+                    next: res => {
+                        localStorage.setItem('user', JSON.stringify(res?.data))
+                        this.toast.success('Cập nhật thông tin thành công!')
+                    },
+                    error: e => console.log(e)
+                })
+            }
+            this.ref.close()
 
-            this.userService.update(updatedUser).subscribe({
-                next: res => {
-                    localStorage.setItem('user', JSON.stringify(res?.data))
-                    this.toast.success('Cập nhật thông tin thành công!')
-                },
-                error: e => console.log(e)
-            })
         }
     }
     onFileSelected(event: UploadEvent) {

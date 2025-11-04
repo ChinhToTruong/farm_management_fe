@@ -8,6 +8,7 @@ import { AuthGuard } from '@/commons/guards/auth.guard';
 import { AppTable } from '@/layout/component/table/table';
 import { Test } from '@/pages/test/test';
 import { EditProfile } from '@/pages/users/edit-profile/edit-profile';
+import { UserList } from '@/pages/users/user-list/user-list';
 
 export const appRoutes: Routes = [
     {
@@ -25,7 +26,18 @@ export const appRoutes: Routes = [
         path: 'users',
         component: AppLayout,
         children: [
-            {path: 'profile', component: EditProfile}
+            {
+                path: 'profile',
+                component: EditProfile
+            },
+            {
+                path: ':id',
+                component: EditProfile,
+            },
+            {
+                path: '',
+                component:UserList
+            }
         ]
     },
     {

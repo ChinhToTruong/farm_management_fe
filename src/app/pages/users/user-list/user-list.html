@@ -1,0 +1,15 @@
+<app-table
+    [title]="title"
+    [columns]="columns"
+    [data]="data"
+    [showExport]="true"
+    [id]="id"
+    [searchField]="'name'"
+    (selectionChanged)="selectionChange($event)"
+    (onDeleteList)="onDeleteList($event)"
+    (onDelete)="onDelete($event)"
+    (onSearch)="onSearch($event)"
+    (onNew)="onNew()"
+    [rowHover]="true"
+    [total]="total"
+/>

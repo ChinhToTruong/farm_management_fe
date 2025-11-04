@@ -66,14 +66,15 @@
 
             <p-select [options]="status" placeholder="Status" class="w-full md:w-56 m-2" formControlName="status"
                 [disabled]="!editMode" />
+            @if (!readonly) {
+                <!-- Buttons -->
+                <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+                    <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()">
+                    </p-button>
+                    <p-button *ngIf="editMode" type="submit" label="Save" />
 
-            <!-- Buttons -->
-            <div class="md:col-span-2 flex gap-2 justify-end mt-4">
-                <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()">
-                </p-button>
-                <p-button *ngIf="editMode" type="submit" label="Save" />
-
-            </div>
+                </div>
+            }
         </form>
     </div>
 </div>
