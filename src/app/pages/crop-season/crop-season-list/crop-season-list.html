@@ -7,6 +7,6 @@
 
 <p-dialog [modal]="true" [(visible)]="visible" [style]="{ width: '100rem' }">
     @if(visible){
-        <app-crop-season-detail [mode]="mode" (onSubmit)="onSubmit()"/>
+        <app-crop-season-detail [mode]="mode" [cropSeason]="cropSeason" (onSubmit)="onSubmit()"/>
     }
 </p-dialog>

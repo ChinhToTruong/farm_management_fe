@@ -1,4 +1,5 @@
 import { Column } from '@/commons/type/app.table.type';
+import { SearchRequest } from '@/pages/service/base.service';
 
 export const seasonColumns: Column[] = [
     {
@@ -44,3 +45,6 @@ export const seasonColumns: Column[] = [
         sortable: true
     }
 ];
+
+
+export const BASE_SEARCH_REQUEST = {pageNo: 0, pageSize: 100, filters:[{}], sorts:[{field : "id", direction: 'ASC'}]} as SearchRequest

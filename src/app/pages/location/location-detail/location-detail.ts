@@ -73,7 +73,6 @@ export class LocationDetail implements OnInit {
                 type: this.location.type,
                 description: this.location.description,
             })
-            console.log(this.location);
         }
 
 

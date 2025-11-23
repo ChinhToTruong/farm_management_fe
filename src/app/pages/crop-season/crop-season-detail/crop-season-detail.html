@@ -33,6 +33,7 @@
                               class="w-full"
                               [iconDisplay]="'input'"
                               [readonlyInput]="true"
+                              [appendTo]="'body'"
                               [disabled]="!editMode"></p-datepicker>
                 <label for="startDate">Ngày bắt đầu</label>
             </p-floatlabel>
@@ -49,6 +50,7 @@
                               class="w-full"
                               [iconDisplay]="'input'"
                               [readonlyInput]="true"
+                              appendTo="body"
                               [disabled]="!editMode"></p-datePicker>
                 <label for="endDate">Ngày kết thúc</label>
             </p-floatlabel>
@@ -73,6 +75,7 @@
             <p-select [options]="locationOptions"
                       placeholder="Khu vực"
                       formControlName="location"
+                      optionValue="id"
                       optionLabel="locationName"
                       class="w-full"
                       [disabled]="!editMode">

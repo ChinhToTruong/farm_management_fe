@@ -9,7 +9,8 @@ export abstract class BaseTableService<T> {
     protected pageNo: number = 1;
     protected pageSize: number = 10;
     toast = inject(ToastService)
-    constructor(protected service: BaseService<T>) {
+
+    protected constructor(protected service: BaseService<T>) {
     }
 
 
