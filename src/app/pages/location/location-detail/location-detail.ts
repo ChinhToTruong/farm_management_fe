@@ -1,17 +1,12 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { Button } from 'primeng/button';
-import { FileUpload, UploadEvent } from 'primeng/fileupload';
 import { FloatLabel } from 'primeng/floatlabel';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
 import { NgIf } from '@angular/common';
 import { Select } from 'primeng/select';
 import { User, UserService } from '@/pages/service/user.service';
-import { AuthService } from '@/pages/service/auth.service';
-import { FileService } from '@/pages/service/file.service';
 import { ToastService } from '@/pages/service/toast.service';
-import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs';
 import { Textarea } from 'primeng/textarea';
 import { LocationType } from '@/commons/type/location';
 import { LocationService } from '@/pages/service/location.service';
@@ -21,7 +16,6 @@ import { SearchRequest } from '@/pages/service/base.service';
   selector: 'app-location-detail',
     imports: [
         Button,
-        FileUpload,
         FloatLabel,
         FormsModule,
         InputText,

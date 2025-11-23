@@ -14,7 +14,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { LocationService } from '@/pages/service/location.service';
 import { LocationType } from '@/commons/type/location';
 import { AppTable } from '@/layout/component/table/table';
-import { UserForm } from '@/pages/users/user-form/user-form';
 import { BaseTableService } from '@/pages/service/base.table.service';
 import { Column } from '@/commons/type/app.table.type';
 import { ToastService } from '@/pages/service/toast.service';
@@ -48,7 +47,6 @@ export interface LocationModel {
         ToolbarModule,
         TooltipModule,
         AppTable,
-        UserForm,
         LocationDetail
     ],
   templateUrl: './location.html',

@@ -1,12 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { BaseTableService } from '@/pages/service/base.table.service';
 import { ToastService } from '@/pages/service/toast.service';
-import { LocationService } from '@/pages/service/location.service';
 import { SearchRequest } from '@/pages/service/base.service';
 import { AppTable } from '@/layout/component/table/table';
 import { Dialog } from 'primeng/dialog';
-import { LocationDetail } from '@/pages/location/location-detail/location-detail';
-import { cropSeasonMockData } from '@/pages/crop-season/commons/crop-season.mock-data';
 import { seasonColumns } from '@/pages/crop-season/commons/constants';
 import { Column } from '@/commons/type/app.table.type';
 import { CropSeasonDetail } from '@/pages/crop-season/crop-season-detail/crop-season-detail';
@@ -37,7 +34,6 @@ export interface CropSeason {
     imports: [
         AppTable,
         Dialog,
-        LocationDetail,
         CropSeasonDetail
     ],
   templateUrl: './crop-season-list.html',
