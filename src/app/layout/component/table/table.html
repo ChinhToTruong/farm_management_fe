@@ -13,7 +13,7 @@
 <p-table
     #dt
     [value]="data"
-    [rows]="5"
+    [rows]="10"
     [columns]="columns"
     [paginator]="paginator"
     (onPage)="onPageChange($event)"
@@ -24,9 +24,8 @@
     [rowHover]="rowHover"
     [dataKey]="id"
     [totalRecords]="total"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords}'"
     [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="rowsPerPageOptions"
     class="my-table"
 >
     <ng-template #caption>

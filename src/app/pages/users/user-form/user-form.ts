@@ -1,9 +1,9 @@
 import { AuthService } from '@/pages/service/auth.service';
 import { FileService } from '@/pages/service/file.service';
 import { ToastService } from '@/pages/service/toast.service';
-import { UserService } from '@/pages/service/user.service';
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Permission, Role, UserService } from '@/pages/service/user.service';
+import { CommonModule, formatDate } from '@angular/common';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
@@ -13,6 +13,10 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { take } from 'rxjs';
+import { DatePickerModule } from 'primeng/datepicker';
+import { RoleService } from '@/pages/service/role.service';
+import { PermissionService } from '@/pages/service/permission.service';
+import { SearchRequest } from '@/pages/service/base.service';
 
 
 
@@ -22,19 +26,19 @@ interface UploadEvent {
 }
 @Component({
   selector: 'app-user-form',
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    FloatLabel, InputTextModule, FormsModule, Select,
-    ButtonModule,
-    AvatarModule,
-    FileUpload
-],
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        FloatLabel, InputTextModule, FormsModule, Select,
+        ButtonModule,
+        AvatarModule,
+        FileUpload, DatePickerModule
+    ],
   templateUrl: './user-form.html',
   styleUrl: './user-form.scss',
 })
-export class UserForm {
-  user: any; // user từ backend hoặc localStorage
+export class UserForm implements OnInit {
+  @Input("user") user: any; // user từ backend hoặc localStorage
     avatar!: string;
     editMode: boolean = false;
     loading: boolean = false;
@@ -44,6 +48,8 @@ export class UserForm {
     @Output("onSubmit") onSubmitEvent = new EventEmitter<any>();
 
     status!: string[];
+    role: Role[] = [];
+    permission: Permission[] = [];
 
     form!: FormGroup;
 
@@ -53,11 +59,33 @@ export class UserForm {
     toast = inject(ToastService);
     activeRouter = inject(ActivatedRoute)
 
+    roleService = inject(RoleService);
+    permissionService = inject(PermissionService);
+
     constructor(private fb: FormBuilder) { }
 
     ngOnInit(): void {
 
         this.status = ['ACTIVE', 'INACTIVE'];
+        this.roleService.search({pageNo: 0, pageSize: 100, filters:[{}], sorts:[{field : "id", direction: 'ASC'}]} as SearchRequest)
+            .subscribe({
+                next: response => {
+                    console.log(response.data);
+                    this.role = response.data.content
+                },
+                error: error => {
+                    this.toast.error(error.error);
+                }
+            })
+        this.permissionService.search({pageNo: 0, pageSize: 100, filters:[{}], sorts:[{field : "id", direction: 'ASC'}]} as SearchRequest)
+            .subscribe({
+                next: response => {
+                    this.permission = response.data.content as Permission[]
+                },
+                error: error => {
+                    this.toast.error(error.error);
+                }
+            })
 
 
         this.initForm();
@@ -68,43 +96,38 @@ export class UserForm {
 
         if(this.mode == 'update') {
             this.editMode = false;
-            this.activeRouter.paramMap.pipe(take(1)).subscribe(params => {
-                this.id = +params.get('id')!;
-                this.readonly = !!this.id;
+            const userObservable = this.user
+                ? this.userService.getById(this.user.id)
+                : this.authService.current();
+            userObservable.subscribe({
+                next: res => {
+                    this.user = res.data;
+                    console.log(this.user);
+                    this.form.patchValue({
+                        username: this.user?.username,
+                        name: this.user?.name,
+                        email: this.user?.email,
+                        phone: this.user?.phone,
+                        dob: formatDate(this.user?.dob, 'dd/MM/yyyy HH:mm:ss', 'en-US'),
+                        status: this.user?.status,
+                    });
 
-                const userObservable = this.readonly 
-                    ? this.userService.getById(this.id)
-                    : this.authService.current();
-
-                userObservable.subscribe({
-                    next: res => {
-                        this.user = res.data;
-                        this.form.patchValue({
-                            username: this.user?.username,
-                            name: this.user?.name,
-                            email: this.user?.email,
-                            phone: this.user?.phone,
-                            dob: this.user?.dob,
-                            status: this.user?.status,
+                    if (this.user?.avatar) {
+                        this.fileService.getFile(this.user.avatar).subscribe({
+                            next: res => this.avatar = res.data.base64,
+                            error: () => this.toast.error()
                         });
+                    }
 
-                        if (this.user?.avatar) {
-                            this.fileService.getFile(this.user.avatar).subscribe({
-                                next: res => this.avatar = res.data.base64,
-                                error: () => this.toast.error()
-                            });
-                        }
-
-                        if (this.readonly) {
-                            this.form.disable();
-                        }
-                        this.loading = false;
-                    },
-                    error: () => this.toast.error()
-                });
+                    if (this.readonly) {
+                        this.form.disable();
+                    }
+                    this.loading = false;
+                },
+                error: () => this.toast.error()
             });
         }
-        
+
 
     }
 
@@ -116,7 +139,9 @@ export class UserForm {
         phone: [this.user?.phone || '', Validators.pattern(/^0[0-9]{9}$/)],
         status: [this.user?.status || '', Validators.required],
         password: [],
-        dob: []
+        dob: [],
+        permission: [],
+        role: []
     });
 }
 
@@ -141,6 +166,8 @@ export class UserForm {
             this.loading = true;
             const updatedUser = {
                 ...this.form.value,
+                dob: formatDate(this.form.value.dob, 'dd/MM/yyyy HH:mm:ss', 'en-US'),
+                role: {id: this.form.value.role, permissions: [{id: this.form.value.permission}]},
                 id: this.user?.id || null
             };
 
@@ -150,6 +177,7 @@ export class UserForm {
                         localStorage.setItem('user', JSON.stringify(res?.data))
                         this.toast.success('Cập nhật thông tin thành công!')
                         this.onSubmitEvent.emit()
+                        this.loading = false;
                     },
                     error: e => {
                         this.toast.error(e)

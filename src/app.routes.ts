@@ -9,6 +9,8 @@ import { AppTable } from '@/layout/component/table/table';
 import { Test } from '@/pages/test/test';
 import { EditProfile } from '@/pages/users/edit-profile/edit-profile';
 import { UserList } from '@/pages/users/user-list/user-list';
+import { LocationList } from '@/pages/location/location';
+import { CropSeasonList } from '@/pages/crop-season/crop-season-list/crop-season-list';
 
 export const appRoutes: Routes = [
     {
@@ -37,6 +39,26 @@ export const appRoutes: Routes = [
             {
                 path: '',
                 component:UserList
+            }
+        ]
+    },
+    {
+        path: 'locations',
+        component: AppLayout,
+        children: [
+            {
+                path: '',
+                component:LocationList
+            }
+        ]
+    },
+    {
+        path: 'crop-seasons',
+        component: AppLayout,
+        children: [
+            {
+                path: '',
+                component:CropSeasonList
             }
         ]
     },

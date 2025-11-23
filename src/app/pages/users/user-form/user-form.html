@@ -76,8 +76,27 @@
                 </small>
             </div>
 
+            <div >
+                <p-float-label class="m-2">
+                    <label for="dob" class="font-bold block m-2"> Button </label>
+                    <p-datepicker [panelStyle]="{ 'font-size': '12px', padding: '4px' }"
+                                  class="w-full" formControlName="dob"
+                                  [showIcon]="true" inputId="dob"
+                                  [showOnFocus]="false"
+                                  appendTo="body"
+                                  [disabled]="!editMode"
+                    ></p-datepicker>
+                </p-float-label>
+            </div>
+
             <p-select [options]="status" placeholder="Status" class="w-full md:w-56 m-2" formControlName="status"
                 [disabled]="!editMode" />
+            @if (!id){
+                <p-select [options]="role" optionValue="id" optionLabel="roleName" placeholder="Role" class="w-full md:w-56 m-2" formControlName="role"
+                      [disabled]="!editMode" />
+                <p-select [options]="permission" optionValue="id" optionLabel="permissionName" placeholder="Permission" class="w-full md:w-56 m-2" formControlName="permission"
+                      [disabled]="!editMode" />
+            }
             @if (!readonly) {
             <!-- Buttons -->
                 <div class="md:col-span-2 flex gap-2 justify-end mt-4">

@@ -13,7 +13,13 @@ export const menuConfig : RoleMenuItem[] =  [
         label: 'Trang chủ', icon: 'pi pi-fw pi-home', routerLink: ['/'], roles: ['ADMIN', 'FARMER', 'ENGINEER']
     },
     {
-        label: 'Quản lý người dùng', icon: 'pi pi-fw pi-users', routerLink: ['/users'], roles: ['FARMER']
+        label: 'Quản lý người dùng', icon: 'pi pi-fw pi-users', routerLink: ['/users'], roles: ['FARMER', 'ADMIN']
+    },
+    {
+        label: 'Quản lý khu vực', icon: 'pi pi-fw pi-users', routerLink: ['/locations'], roles: ['FARMER', 'ADMIN']
+    },
+    {
+        label: 'Quản lý vụ mùa', icon: 'pi pi-fw pi-users', routerLink: ['/crop-seasons'], roles: ['FARMER', 'ADMIN']
     },
     {
         label: 'Quản lý trang trại',

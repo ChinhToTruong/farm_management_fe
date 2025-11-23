@@ -10,6 +10,7 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
 import { AuthService } from '@/pages/service/auth.service';
 import { Toast } from 'primeng/toast';
 import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+import { ToastService } from '@/pages/service/toast.service';
 
 @Component({
     selector: 'app-login',
@@ -75,6 +76,7 @@ export class Login {
     private fb = inject(FormBuilder);
     private auth = inject(AuthService);
     private router = inject(Router);
+    private toast = inject(ToastService);
 
     formLogin = this.fb.group({
         email: ['', Validators.required],
@@ -98,7 +100,7 @@ export class Login {
                     }
                 },
                 error: error => {
-                    console.log(error);
+                    this.toast.error("Xảy ra lỗi khi đăng nhập");
                 }
             });
         }

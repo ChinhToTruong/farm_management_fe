@@ -1,0 +1,77 @@
+<div class="flex flex-col gap-4 col-span-12">
+    <span class="text-xl font-semibold mb-4">Location Information</span>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Location Name -->
+        <div>
+            <p-floatlabel class="m-2">
+                <input pInputText id="locationName" autocomplete="off"
+                       formControlName="locationName" class="w-full"
+                       [readonly]="!editMode" />
+                <label for="locationName">Tên khu vực</label>
+            </p-floatlabel>
+            <small class="text-red-500 m-2"
+                   *ngIf="form.get('locationName')?.invalid && form.get('locationName')?.touched">
+                Tên khu vực là bắt buộc.
+            </small>
+        </div>
+
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="userId"
+                    formControlName="userId"
+                    class="w-full"
+                    [options]="userOptions"
+                    optionLabel="name"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true"
+                >
+                </p-select>
+
+                <label for="userId">Người dùng</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Area Size -->
+        <div>
+            <p-floatlabel class="m-2">
+                <input pInputText id="areaSize" autocomplete="off"
+                       formControlName="areaSize" class="w-full"
+                       [readonly]="!editMode" />
+                <label for="areaSize">Diện tích (m²)</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Type -->
+        <div class="m-2">
+            <p-select
+                [options]="locationTypes"
+                placeholder="Loại hình"
+                class="w-full"
+                formControlName="type"
+                [disabled]="!editMode">
+            </p-select>
+        </div>
+
+        <!-- Description -->
+        <div class="col-span-1 md:col-span-2">
+            <p-floatlabel class="m-2">
+            <textarea pInputTextarea id="description" rows="3"
+                      formControlName="description" class="w-full"
+                      [readonly]="!editMode"></textarea>
+                <label for="description">Mô tả</label>
+            </p-floatlabel>
+        </div>
+
+        @if (!readonly) {
+            <!-- Buttons -->
+            <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+                <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()"></p-button>
+                <p-button *ngIf="editMode" type="submit" label="Save"></p-button>
+            </div>
+        }
+
+    </form>
+</div>

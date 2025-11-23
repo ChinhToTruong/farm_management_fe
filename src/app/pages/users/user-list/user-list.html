@@ -1,11 +1,13 @@
 <app-table [title]="title" [columns]="columns" [data]="data" [showExport]="true" [id]="id" [searchField]="'name'"
+           [paginator]="true"
     (selectionChanged)="selectionChange($event)" (onDeleteList)="onDeleteList($event)" (onDelete)="onDelete($event)"
-    (onSearch)="onSearch($event)" (onNew)="onNew()" [rowHover]="true" [total]="total" />
+    (onSearch)="onSearch($event)" (onNew)="onNew()"
+           (onEdit)="onEdit($event)" [rowHover]="false" [total]="total" />
 
 
 
 <p-dialog [modal]="true" [(visible)]="visible" [style]="{ width: '100rem' }">
     @if(visible){
-        <app-user-form mode="create" (onSubmit)="onSubmit()"/>
+        <app-user-form [mode]="mode" [user]="user" (onSubmit)="onSubmit()"/>
     }
 </p-dialog>

@@ -5,7 +5,7 @@ import { ToastService } from './toast.service';
 
 export abstract class BaseTableService<T> {
     protected id: string = 'id';
-    protected filters!: FilterRequest[];
+    protected filters: FilterRequest[] = [];
     protected pageNo: number = 1;
     protected pageSize: number = 10;
     toast = inject(ToastService)
@@ -19,7 +19,8 @@ export abstract class BaseTableService<T> {
 
         this.service.delete(item.id).subscribe({
             next: data => {
-                this.toast.success("Xoá dữ liệu thành công")
+                this.toast.success("Xoá dữ liệu thành công");
+                this.filter()
             },
             error: err => {
                 this.toast.error(err)
@@ -31,7 +32,8 @@ export abstract class BaseTableService<T> {
         const ids = items.map(item => item.id);
         this.service.deleteList(ids).subscribe({
              next: data => {
-                this.toast.success("Xoá dữ liệu thành công")
+                this.toast.success("Xoá dữ liệu thành công");
+                this.filter()
             },
             error: err => {
                 this.toast.error(err)
@@ -40,7 +42,8 @@ export abstract class BaseTableService<T> {
     }
 
     onSearch(params: any): void  {
-        this.filters = params;
+        console.log(params);
+        this.filters = [params];
         const par : SearchRequest = {
             pageNo: this.pageNo - 1,
             pageSize: this.pageSize,
@@ -52,7 +55,6 @@ export abstract class BaseTableService<T> {
                 }
             ]
         }
-        console.log(params);
         this.filter()
     }
 

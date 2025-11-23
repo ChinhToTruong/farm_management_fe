@@ -3,13 +3,15 @@ import { AppTable } from '@/layout/component/table/table';
 import { Column } from '@/commons/type/app.table.type';
 import { ToastService } from '@/pages/service/toast.service';
 import { BaseTableService } from '@/pages/service/base.table.service';
-import { UserService } from '@/pages/service/user.service';
+import { User, UserService } from '@/pages/service/user.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { EditProfile } from '@/pages/users/edit-profile/edit-profile';
 import { Dialog } from "primeng/dialog";
 import { UserForm } from "../user-form/user-form";
 import { col } from './commons/constants';
 import { SearchRequest } from '@/pages/service/base.service';
+import { MOCK_USERS } from '@/pages/users/user-list/commons/mock-data';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -31,7 +33,9 @@ export class UserList extends BaseTableService<any> implements OnInit {
     protected totalPages!: any;
     override toast = inject(ToastService);
     visible: boolean = false;
-
+    mode: 'create' |'update' = 'create';
+    location = inject(Location)
+    user!: User;
 
     constructor(protected userService: UserService) {
         super(userService);
@@ -56,6 +60,7 @@ export class UserList extends BaseTableService<any> implements OnInit {
 
     onSubmit() {
         this.visible = false
+        this.filter()
     }
 
 
@@ -72,15 +77,24 @@ export class UserList extends BaseTableService<any> implements OnInit {
                 }
             ]
         }
+                // this.data = MOCK_USERS
 
-        this.userService.search(par).subscribe({
-            next: res => {
-                this.data = res.data.content
-                this.totalPages = res.data.totalPages
-                this.total = res.data.size
-            },
-            error: e => console.log(e)
-        })
+            this.userService.search(par).subscribe({
+                next: res => {
+                    this.data = res.data.content
+                    this.totalPages = res.data.totalPages
+                    this.total = res.data.totalElements
+                    console.log(this.total);
+                },
+                error: e => this.toast.error(e)
+            })
+    }
+
+    onEdit(item: any){
+        this.visible = true
+        this.mode = 'update'
+        this.user = item
+
     }
 
 }

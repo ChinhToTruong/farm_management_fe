@@ -1,4 +1,5 @@
 import {
+    AfterViewInit, ChangeDetectorRef,
     Component,
     ElementRef,
     EventEmitter,
@@ -79,7 +80,7 @@ export class AppTable implements OnInit {
     @Input() showExport = true;
 
     @Input() rowHover: boolean = false;
-    @Input() paginator: boolean = true;
+    @Input() paginator: boolean = false;
 
     @Input() searchOperator:string = "like";
     @Input() searchField!:string;
@@ -151,5 +152,4 @@ export class AppTable implements OnInit {
     onDelete(item: any) {
         this.onDeleteEvent.emit(item);
     }
-
 }
