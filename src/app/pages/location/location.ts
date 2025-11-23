@@ -53,7 +53,7 @@ export interface LocationModel {
   styleUrl: './location.scss',
     providers: [MessageService, ProductService, ConfirmationService]
 })
-export class LocationList extends BaseTableService<any>{
+export class LocationList extends BaseTableService<LocationType>{
     locations: LocationType[] = [];
     cols: any[] = []
     statuses: any[] = []

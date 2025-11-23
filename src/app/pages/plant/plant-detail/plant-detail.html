@@ -1,0 +1,143 @@
+<div class="flex flex-col gap-4 col-span-12">
+    <span class="text-xl font-semibold mb-4">Plant Information</span>
+        <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <!-- Crop Season -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <p-select
+                        id="cropSeason"
+                        formControlName="cropSeasonId"
+                        class="w-full"
+                        [options]="cropSeasonOptions"
+                        optionLabel="seasonName"
+                        optionValue="id"
+                        [disabled]="!editMode"
+                        [filter]="true"
+                    >
+                    </p-select>
+
+                    <label for="cropSeason">Vụ mùa</label>
+                </p-floatlabel>
+            </div>
+
+            <!-- Location -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <p-select
+                        id="userId"
+                        formControlName="locationId"
+                        class="w-full"
+                        [options]="locationOptions"
+                        optionLabel="locationName"
+                        optionValue="id"
+                        [disabled]="!editMode"
+                        [filter]="true"
+                    >
+                    </p-select>
+
+                    <label for="userId">Khu vực</label>
+                </p-floatlabel>
+            </div>
+
+            <!-- plant Name -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="plantName" autocomplete="off"
+                           formControlName="plantName" class="w-full"
+                           [readonly]="!editMode" />
+                    <label for="plantName">Tên loại cây</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2"
+                       *ngIf="form.get('plantName')?.invalid && form.get('plantName')?.touched">
+                    Tên loại cây là bắt buộc.
+                </small>
+            </div>
+
+            <!-- Location Name -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <input pInputText id="plantVariety" autocomplete="off"
+                           formControlName="plantVariety" class="w-full"
+                           [readonly]="!editMode" />
+                    <label for="plantVariety">Tên giống cây</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2"
+                       *ngIf="form.get('plantVariety')?.invalid && form.get('plantVariety')?.touched">
+                    Tên giống là bắt buộc.
+                </small>
+            </div>
+
+
+            <div>
+                <p-floatlabel class="m-2">
+                    <p-inputNumber formControlName="quantity" inputId="quantity" locale="en-US" />
+                    <label for="quantity">Số lượng</label>
+                </p-floatlabel>
+            </div>
+
+            <!-- Quantity -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <p-datePicker id="endDate" formControlName="sowDate"
+                                  class="w-full"
+                                  [iconDisplay]="'input'"
+                                  [readonlyInput]="true"
+                                  appendTo="body"
+                                  [disabled]="!editMode"></p-datePicker>
+                    <label for="sowDate">Ngày gieo trồng</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2"
+                       *ngIf="form.get('sowDate')?.invalid && form.get('sowDate')?.touched">
+                    sowDate is required.
+                </small>
+            </div>
+
+            <!-- End Date -->
+            <div>
+                <p-floatlabel class="m-2">
+                    <p-datePicker id="harvestDate" formControlName="harvestDate"
+                                  class="w-full"
+                                  [iconDisplay]="'input'"
+                                  [readonlyInput]="true"
+                                  appendTo="body"
+                                  [disabled]="!editMode"></p-datePicker>
+                    <label for="harvestDate">Ngày thu hoạch</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2"
+                       *ngIf="form.get('harvestDate')?.invalid && form.get('harvestDate')?.touched">
+                    harvestDate is required.
+                </small>
+            </div>
+
+            <!-- Status -->
+            <div class="flex flex-col gap-1">
+                <label class="font-semibold">Trạng thái</label>
+                <p-select
+                    formControlName="status"
+                    [options]="status"
+                    class="w-full">
+                </p-select>
+            </div>
+
+            <!-- Description -->
+            <div class="col-span-1 md:col-span-2">
+                <p-floatlabel class="m-2">
+                    <textarea pInputTextarea id="notes" rows="3"
+                              formControlName="notes" class="w-full"
+                              [readonly]="!editMode"></textarea>
+                    <label for="notes">Mô tả</label>
+                </p-floatlabel>
+            </div>
+
+            @if (!readonly) {
+                <!-- Buttons -->
+                <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+                    <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()"></p-button>
+                    <p-button *ngIf="editMode" type="submit" label="Save"></p-button>
+                </div>
+            }
+
+        </form>
+
+</div>

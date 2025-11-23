@@ -1,0 +1,150 @@
+<div class="flex flex-col gap-4 col-span-12">
+    <span class="text-xl font-semibold mb-4">Animal Information</span>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Crop Season -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="cropSeason"
+                    formControlName="cropSeasonId"
+                    class="w-full"
+                    [options]="cropSeasonOptions"
+                    optionLabel="seasonName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true"
+                >
+                </p-select>
+
+                <label for="cropSeason">Vụ mùa</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Location -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="userId"
+                    formControlName="locationId"
+                    class="w-full"
+                    [options]="locationOptions"
+                    optionLabel="locationName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true"
+                >
+                </p-select>
+
+                <label for="userId">Khu vực</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- plant Name -->
+        <div>
+            <p-floatlabel class="m-2">
+                <input pInputText id="batchName" autocomplete="off"
+                       formControlName="batchName" class="w-full"
+                       [readonly]="!editMode" />
+                <label for="batchName">Tên đàn vật nuôi</label>
+            </p-floatlabel>
+            <small class="text-red-500 m-2"
+                   *ngIf="form.get('batchName')?.invalid && form.get('batchName')?.touched">
+                Tên đàn vật nuôi là bắt buộc.
+            </small>
+        </div>
+
+        <!-- Location Name -->
+        <div>
+            <p-floatlabel class="m-2">
+                <input pInputText id="animalType" autocomplete="off"
+                       formControlName="animalType" class="w-full"
+                       [readonly]="!editMode" />
+                <label for="animalType">Tên loại vật nuôi</label>
+            </p-floatlabel>
+            <small class="text-red-500 m-2"
+                   *ngIf="form.get('animalType')?.invalid && form.get('animalType')?.touched">
+                Tên loại vật nuôi là bắt buộc.
+            </small>
+        </div>
+
+
+        <div>
+            <p-floatlabel class="m-2">
+                <p-inputNumber formControlName="quantityStart" inputId="quantityStart" locale="en-US" />
+                <label for="quantityStart">Số lượng</label>
+            </p-floatlabel>
+        </div>
+
+        <div>
+            <p-floatlabel class="m-2">
+                <p-inputNumber formControlName="quantityCurrent" inputId="quantityCurrent" locale="en-US" />
+                <label for="quantityCurrent">Số lượng</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Quantity -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-datePicker id="startDate" formControlName="startDate"
+                              class="w-full"
+                              [iconDisplay]="'input'"
+                              [readonlyInput]="true"
+                              appendTo="body"
+                              [disabled]="!editMode"></p-datePicker>
+                <label for="startDate">Ngày gieo trồng</label>
+            </p-floatlabel>
+            <small class="text-red-500 m-2"
+                   *ngIf="form.get('startDate')?.invalid && form.get('startDate')?.touched">
+                startDate is required.
+            </small>
+        </div>
+
+        <!-- End Date -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-datePicker id="expectedEndDate" formControlName="expectedEndDate"
+                              class="w-full"
+                              [iconDisplay]="'input'"
+                              [readonlyInput]="true"
+                              appendTo="body"
+                              [disabled]="!editMode"></p-datePicker>
+                <label for="expectedEndDate">Ngày thu hoạch</label>
+            </p-floatlabel>
+            <small class="text-red-500 m-2"
+                   *ngIf="form.get('expectedEndDate')?.invalid && form.get('expectedEndDate')?.touched">
+                expectedEndDate is required.
+            </small>
+        </div>
+
+        <!-- Status -->
+        <div class="flex flex-col gap-1">
+            <label class="font-semibold">Trạng thái</label>
+            <p-select
+                formControlName="status"
+                [options]="status"
+                class="w-full m-2">
+            </p-select>
+        </div>
+
+        <!-- Description -->
+        <div class="col-span-1 md:col-span-2">
+            <p-floatlabel class="m-2">
+                    <textarea pInputTextarea id="note" rows="3"
+                              formControlName="note" class="w-full"
+                              [readonly]="!editMode"></textarea>
+                <label for="note">Mô tả</label>
+            </p-floatlabel>
+        </div>
+
+        @if (!readonly) {
+            <!-- Buttons -->
+            <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+                <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()"></p-button>
+                <p-button *ngIf="editMode" type="submit" label="Save"></p-button>
+            </div>
+        }
+
+    </form>
+
+</div>

@@ -22,6 +22,15 @@ export const menuConfig : RoleMenuItem[] =  [
         label: 'Quản lý vụ mùa', icon: 'pi pi-fw pi-users', routerLink: ['/crop-seasons'], roles: ['FARMER', 'ADMIN']
     },
     {
+        label: 'Quản lý cây trồng', icon: 'pi pi-fw pi-users', routerLink: ['/plants'], roles: ['FARMER', 'ADMIN']
+    },
+    {
+        label: 'Quản lý cây vật nuôi', icon: 'pi pi-fw pi-users', routerLink: ['/animals'], roles: ['FARMER', 'ADMIN']
+    },
+    {
+        label: 'Quản lý cây công việc hằng ngày', icon: 'pi pi-fw pi-users', routerLink: ['/work-diaries'], roles: ['FARMER', 'ADMIN']
+    },
+    {
         label: 'Quản lý trang trại',
         icon: 'pi pi-fw pi-briefcase',
         roles: ['ADMIN', 'FARMER'],

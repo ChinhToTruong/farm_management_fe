@@ -11,6 +11,8 @@ import { EditProfile } from '@/pages/users/edit-profile/edit-profile';
 import { UserList } from '@/pages/users/user-list/user-list';
 import { LocationList } from '@/pages/location/location';
 import { CropSeasonList } from '@/pages/crop-season/crop-season-list/crop-season-list';
+import { PlantList } from '@/pages/plant/plant-list/plant-list';
+import { AnimalList } from '@/pages/animal/animal-list/animal-list';
 
 export const appRoutes: Routes = [
     {
@@ -59,6 +61,26 @@ export const appRoutes: Routes = [
             {
                 path: '',
                 component:CropSeasonList
+            }
+        ]
+    },
+    {
+        path: 'plants',
+        component: AppLayout,
+        children: [
+            {
+                path: '',
+                component:PlantList
+            }
+        ]
+    },
+    {
+        path: 'animals',
+        component: AppLayout,
+        children: [
+            {
+                path: '',
+                component:AnimalList
             }
         ]
     },
