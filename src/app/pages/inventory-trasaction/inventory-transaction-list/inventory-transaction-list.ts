@@ -1,28 +1,32 @@
 import { Component, inject } from '@angular/core';
-import { BaseTableService } from '@/pages/service/base.table.service';
-import { Item, ItemDetail } from '@/pages/item/item-detail/item-detail';
+import { AppTable } from '@/layout/component/table/table';
+import { Dialog } from 'primeng/dialog';
 import { Column } from '@/commons/type/app.table.type';
 import { ToastService } from '@/pages/service/toast.service';
 import { LocationType } from '@/commons/type/location';
+import { CropSeasonService } from '@/pages/service/crop-season.service';
+import { LocationService } from '@/pages/service/location.service';
 import { SearchRequest } from '@/pages/service/base.service';
-import { ItemService } from '@/pages/service/item.service';
-import { Category } from '@/pages/category/category-detail/category-detail';
-import { AppTable } from '@/layout/component/table/table';
-import { Dialog } from 'primeng/dialog';
-import { itemColumns } from '@/pages/item/common/constants';
+import { BaseTableService } from '@/pages/service/base.table.service';
+import {
+    InventoryTransaction,
+    InventoryTransactionDetail
+} from '@/pages/inventory-trasaction/inventory-transaction-detail/inventory-transaction-detail';
+import { InventoryTransactionService } from '@/pages/service/inventory-transaction.service';
+import { inventoryTransactionColumns } from '@/pages/inventory-trasaction/common/constants';
 
 @Component({
-  selector: 'app-item-list',
+  selector: 'app-inventory-transaction-list',
     imports: [
         AppTable,
         Dialog,
-        ItemDetail
+        InventoryTransactionDetail
     ],
-  templateUrl: './item-list.html',
-  styleUrl: './item-list.scss',
+  templateUrl: './inventory-transaction-list.html',
+  styleUrl: './inventory-transaction-list.scss',
 })
-export class ItemList extends BaseTableService<Item>{
-    entities: Item[] = [];
+export class InventoryTransactionList extends BaseTableService<InventoryTransaction>{
+    entities: InventoryTransaction[] = [];
     cols: any[] = []
     statuses: any[] = []
 
@@ -34,19 +38,18 @@ export class ItemList extends BaseTableService<Item>{
     override toast = inject(ToastService);
     visible: boolean = false;
     mode: 'create' | 'update' = 'create';
-    selectedEntity!: Item;
-    locations!: LocationType[]
-    categoryOptions!: Category[]
+    selectedEntity!: InventoryTransaction;
 
 
-    constructor(override service: ItemService) {
+
+    constructor(override service: InventoryTransactionService) {
         super(service);
     }
 
 
 
     ngOnInit() {
-        this.cols= itemColumns
+        this.cols= inventoryTransactionColumns
         this.filter()
     }
 

@@ -1,0 +1,153 @@
+<div class="flex flex-col gap-4 col-span-12">
+    <span class="text-xl font-semibold mb-4">Inventory Transaction</span>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Item -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="itemId"
+                    formControlName="itemId"
+                    class="w-full"
+                    [options]="itemOptions"
+                    optionLabel="name"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true">
+                </p-select>
+                <label for="itemId">Vật tư</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Transaction Type -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="transactionType"
+                    formControlName="transactionType"
+                    [options]="transactionTypeOptions"
+                    class="w-full">
+                </p-select>
+                <label for="transactionType">Loại giao dịch</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Quantity -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-inputNumber
+                    id="quantity"
+                    formControlName="quantity"
+                    [min]="1"
+                    [mode]="'decimal'"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="quantity">Số lượng</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Unit Price -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-inputNumber
+                    id="unitPrice"
+                    formControlName="unitPrice"
+                    [min]="0"
+                    [mode]="'currency'"
+                    currency="USD"
+                    locale="en-US"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="unitPrice">Đơn giá</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Total Amount -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-inputNumber
+                    id="totalAmount"
+                    formControlName="totalAmount"
+                    [mode]="'currency'"
+                    currency="USD"
+                    locale="en-US"
+                    class="w-full"
+                    [readonly]="true">
+                </p-inputNumber>
+                <label for="totalAmount">Thành tiền</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Transaction Date -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-datePicker
+                    id="transactionDate"
+                    formControlName="transactionDate"
+                    [iconDisplay]="'input'"
+                    [readonlyInput]="true"
+                    appendTo="body"
+                    class="w-full">
+                </p-datePicker>
+                <label for="transactionDate">Ngày giao dịch</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Related Animal Batch -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="relatedAnimalBatchId"
+                    formControlName="relatedAnimalBatchId"
+                    class="w-full"
+                    [options]="batchOptions"
+                    optionLabel="batchName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true">
+                </p-select>
+                <label for="relatedAnimalBatchId">Đàn vật nuôi liên quan</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Related Plant -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="relatedPlantId"
+                    formControlName="relatedPlantId"
+                    class="w-full"
+                    [options]="plantOptions"
+                    optionLabel="plantName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true">
+                </p-select>
+                <label for="relatedPlantId">Cây trồng liên quan</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Note -->
+        <div class="col-span-1 md:col-span-2">
+            <p-floatlabel class="m-2">
+        <textarea
+            pInputTextarea
+            id="note"
+            rows="3"
+            formControlName="note"
+            class="w-full"
+            [readonly]="!editMode">
+        </textarea>
+                <label for="note">Ghi chú</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Buttons -->
+        <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+            <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()"></p-button>
+            <p-button *ngIf="editMode" type="submit" label="Save"></p-button>
+        </div>
+
+    </form>
+</div>

@@ -17,6 +17,9 @@ import { WorkDiaryList } from '@/pages/work-diary/work-diary-list/work-diary-lis
 import { VaccinationList } from '@/pages/vaccination/vaccination-list/vaccination-list';
 import { CategoryList } from '@/pages/category/category-list/category-list';
 import { ItemList } from '@/pages/item/item-list/item-list';
+import {
+    InventoryTransactionList
+} from '@/pages/inventory-trasaction/inventory-transaction-list/inventory-transaction-list';
 
 export const appRoutes: Routes = [
     {
@@ -125,6 +128,17 @@ export const appRoutes: Routes = [
             {
                 path: '',
                 component: ItemList
+            }
+        ]
+    },
+
+    {
+        path: 'inventory-transactions',
+        component: AppLayout,
+        children: [
+            {
+                path: '',
+                component: InventoryTransactionList
             }
         ]
     },
