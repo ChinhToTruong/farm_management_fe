@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
@@ -30,7 +30,7 @@ export interface Category {
   templateUrl: './category-detail.html',
   styleUrl: './category-detail.scss',
 })
-export class CategoryDetail {
+export class CategoryDetail implements OnInit {
     @Input("mode") mode: string = 'update';
     @Output("onSubmit") onSubmitEvent = new EventEmitter<any>();
     @Input("category") category!: Category;

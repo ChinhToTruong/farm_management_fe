@@ -1,0 +1,112 @@
+<div class="flex flex-col gap-4 col-span-12">
+    <span class="text-xl font-semibold mb-4">Item Information</span>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Category -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="categoryId"
+                    formControlName="categoryId"
+                    class="w-full"
+                    [options]="categoryOptions"
+                    optionLabel="name"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true">
+                </p-select>
+                <label for="categoryId">Nhóm vật tư</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Name -->
+        <div>
+            <p-floatlabel class="m-2">
+                <input pInputText
+                       id="name"
+                       formControlName="name"
+                       class="w-full"
+                       autocomplete="off"
+                       [readonly]="!editMode"/>
+                <label for="name">Tên vật tư</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Unit -->
+        <div>
+            <p-floatlabel class="m-2">
+                <input pInputText
+                       id="unit"
+                       formControlName="unit"
+                       class="w-full"
+                       autocomplete="off"
+                       [readonly]="!editMode"/>
+                <label for="unit">Đơn vị tính</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Initial Quantity -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-inputNumber
+                    formControlName="initialQuantity"
+                    inputId="initialQuantity"
+                    [min]="0"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="initialQuantity">Số lượng ban đầu</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Reorder Level -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-inputNumber
+                    formControlName="reorderLevel"
+                    inputId="reorderLevel"
+                    [min]="0"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="reorderLevel">Ngưỡng cảnh báo</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Current Quantity -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-inputNumber
+                    formControlName="currentQuantity"
+                    inputId="currentQuantity"
+                    [min]="0"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="currentQuantity">Số lượng hiện có</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Location -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="locationId"
+                    formControlName="locationId"
+                    class="w-full"
+                    [options]="locationOptions"
+                    optionLabel="locationName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true">
+                </p-select>
+                <label for="locationId">Kho/Khu vực</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Buttons -->
+        <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+            <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()"></p-button>
+            <p-button *ngIf="editMode" type="submit" label="Save"></p-button>
+        </div>
+
+    </form>
+</div>
