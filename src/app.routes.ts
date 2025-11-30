@@ -15,6 +15,7 @@ import { PlantList } from '@/pages/plant/plant-list/plant-list';
 import { AnimalList } from '@/pages/animal/animal-list/animal-list';
 import { WorkDiaryList } from '@/pages/work-diary/work-diary-list/work-diary-list';
 import { VaccinationList } from '@/pages/vaccination/vaccination-list/vaccination-list';
+import { CategoryList } from '@/pages/category/category-list/category-list';
 
 export const appRoutes: Routes = [
     {
@@ -103,6 +104,16 @@ export const appRoutes: Routes = [
             {
                 path: '',
                 component: VaccinationList
+            }
+        ]
+    },
+    {
+        path: 'categories',
+        component: AppLayout,
+        children: [
+            {
+                path: '',
+                component: CategoryList
             }
         ]
     },
