@@ -1,1 +1,12 @@
-<p>work-diary-list works!</p>
+<app-table [title]="title" [columns]="cols" [data]="entities" [showExport]="true" [id]="id" [searchField]="'name'"
+           [paginator]="true"
+           (selectionChanged)="selectionChange($event)" (onDeleteList)="onDeleteList($event)" (onDelete)="onDelete($event)"
+           (onSearch)="onSearch($event)" (onEdit)="onEdit($event)" (onNew)="onNew()" [rowHover]="false" [total]="total" />
+
+
+
+<p-dialog [modal]="true" [(visible)]="visible" [style]="{ width: '100rem' }">
+    @if(visible){
+        <app-work-diary-detail [mode]="mode" [work-diary]="selectedEntity" (onSubmit)="onSubmit()"/>
+    }
+</p-dialog>

@@ -1,1 +1,135 @@
-<p>work-diary-detail works!</p>
+<div class="flex flex-col gap-4 col-span-12">
+    <span class="text-xl font-semibold mb-4">Work Diary Information</span>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- User -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="userId"
+                    formControlName="userId"
+                    class="w-full"
+                    [options]="userOptions"
+                    optionLabel="name"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true"
+                ></p-select>
+
+                <label for="userId">Người thực hiện</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Crop Season -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="cropSeasonId"
+                    formControlName="cropSeasonId"
+                    class="w-full"
+                    [options]="cropSeasonOptions"
+                    optionLabel="seasonName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true"
+                ></p-select>
+
+                <label for="cropSeasonId">Vụ mùa</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Batch -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="batchId"
+                    formControlName="batchId"
+                    class="w-full"
+                    [options]="batchOptions"
+                    optionLabel="batchName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true"
+                ></p-select>
+                <label for="batchId">Đàn vật nuôi (ID)</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Plant -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="plantId"
+                    formControlName="plantId"
+                    class="w-full"
+                    [options]="plantOptions"
+                    optionLabel="plantName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true"
+                ></p-select>
+                <label for="plantId">Cây trồng (ID)</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Work Date -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-datePicker
+                    id="workDate"
+                    formControlName="workDate"
+                    [iconDisplay]="'input'"
+                    [readonlyInput]="true"
+                    appendTo="body"
+                    class="w-full"
+                ></p-datePicker>
+                <label for="workDate">Ngày thực hiện</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Task Name -->
+        <div>
+            <p-floatlabel class="m-2">
+                <input pInputText
+                       id="taskName"
+                       formControlName="taskName"
+                       class="w-full"
+                       autocomplete="off" />
+                <label for="taskName">Tên công việc</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Description -->
+        <div class="col-span-1 md:col-span-2">
+            <p-floatlabel class="m-2">
+                <textarea pInputTextarea
+                          id="description"
+                          rows="3"
+                          formControlName="description"
+                          class="w-full"></textarea>
+                <label for="description">Mô tả</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Status -->
+        <div class="flex flex-col gap-1">
+            <label class="font-semibold">Trạng thái</label>
+            <p-select
+                formControlName="status"
+                [options]="statusOptions"
+                appendTo="body"
+                class="w-full m-2">
+            </p-select>
+        </div>
+
+        <!-- Buttons -->
+        @if (!readonly) {
+            <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+                <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()"></p-button>
+                <p-button *ngIf="editMode" type="submit" label="Save"></p-button>
+            </div>
+        }
+
+    </form>
+</div>

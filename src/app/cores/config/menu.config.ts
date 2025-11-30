@@ -28,7 +28,7 @@ export const menuConfig : RoleMenuItem[] =  [
         label: 'Quản lý cây vật nuôi', icon: 'pi pi-fw pi-users', routerLink: ['/animals'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý cây công việc hằng ngày', icon: 'pi pi-fw pi-users', routerLink: ['/work-diaries'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý công việc hằng ngày', icon: 'pi pi-fw pi-users', routerLink: ['/work-diaries'], roles: ['FARMER', 'ADMIN']
     },
     {
         label: 'Quản lý trang trại',
