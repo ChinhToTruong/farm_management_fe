@@ -1,0 +1,105 @@
+<div class="flex flex-col gap-4 col-span-12">
+    <span class="text-xl font-semibold mb-4">Vaccination Information</span>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Animal Batch -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="batchId"
+                    formControlName="batchId"
+                    class="w-full"
+                    [options]="batchOptions"
+                    optionLabel="batchName"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true">
+                </p-select>
+                <label for="batchId">Đàn vật nuôi</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Vaccination Name -->
+        <div>
+            <p-floatlabel class="m-2">
+                <input pInputText
+                       id="vaccinationName"
+                       formControlName="vaccinationName"
+                       class="w-full"
+                       autocomplete="off"
+                       [readonly]="!editMode"/>
+                <label for="vaccinationName">Tên vắc xin</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- User -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-select
+                    id="userId"
+                    formControlName="userId"
+                    class="w-full"
+                    [options]="userOptions"
+                    optionLabel="name"
+                    optionValue="id"
+                    [disabled]="!editMode"
+                    [filter]="true">
+                </p-select>
+                <label for="userId">Người thực hiện</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Start Date -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-datePicker
+                    id="startDate"
+                    formControlName="startDate"
+                    [iconDisplay]="'input'"
+                    [readonlyInput]="true"
+                    appendTo="body"
+                    class="w-full">
+                </p-datePicker>
+                <label for="startDate">Ngày bắt đầu</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Next Date -->
+        <div>
+            <p-floatlabel class="m-2">
+                <p-datePicker
+                    id="nextDate"
+                    formControlName="nextDate"
+                    [iconDisplay]="'input'"
+                    [readonlyInput]="true"
+                    appendTo="body"
+                    class="w-full">
+                </p-datePicker>
+                <label for="nextDate">Ngày tiếp theo</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Note -->
+        <div class="col-span-1 md:col-span-2">
+            <p-floatlabel class="m-2">
+                <textarea
+                    pInputTextarea
+                    id="note"
+                    rows="3"
+                    formControlName="note"
+                    class="w-full"
+                    [readonly]="!editMode">
+                </textarea>
+                <label for="note">Ghi chú</label>
+            </p-floatlabel>
+        </div>
+
+        <!-- Buttons -->
+        <div class="md:col-span-2 flex gap-2 justify-end mt-4">
+            <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()"></p-button>
+            <p-button *ngIf="editMode" type="submit" label="Save"></p-button>
+        </div>
+
+    </form>
+</div>

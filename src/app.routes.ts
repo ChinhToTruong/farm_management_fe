@@ -14,6 +14,7 @@ import { CropSeasonList } from '@/pages/crop-season/crop-season-list/crop-season
 import { PlantList } from '@/pages/plant/plant-list/plant-list';
 import { AnimalList } from '@/pages/animal/animal-list/animal-list';
 import { WorkDiaryList } from '@/pages/work-diary/work-diary-list/work-diary-list';
+import { VaccinationList } from '@/pages/vaccination/vaccination-list/vaccination-list';
 
 export const appRoutes: Routes = [
     {
@@ -92,6 +93,16 @@ export const appRoutes: Routes = [
             {
                 path: '',
                 component:WorkDiaryList
+            }
+        ]
+    },
+    {
+        path: 'vaccination',
+        component: AppLayout,
+        children: [
+            {
+                path: '',
+                component: VaccinationList
             }
         ]
     },
