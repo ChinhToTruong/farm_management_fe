@@ -87,6 +87,7 @@ export class LocationList extends BaseTableService<LocationType>{
 
     onNew() {
         this.visible = true
+        this.mode = 'create'
     }
 
     onSubmit() {

@@ -58,7 +58,6 @@ export class ItemList extends BaseTableService<Item>{
     onNew() {
         this.visible = true
         this.mode = 'create';
-        console.log(this.mode);
     }
 
     onSubmit() {

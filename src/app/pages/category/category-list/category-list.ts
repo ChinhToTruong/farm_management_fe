@@ -56,7 +56,6 @@ export class CategoryList extends BaseTableService<Category>{
     onNew() {
         this.visible = true
         this.mode = 'create';
-        console.log(this.mode);
     }
 
     onSubmit() {
