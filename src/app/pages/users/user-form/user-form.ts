@@ -3,7 +3,7 @@ import { FileService } from '@/pages/service/file.service';
 import { ToastService } from '@/pages/service/toast.service';
 import { Permission, Role, UserService } from '@/pages/service/user.service';
 import { CommonModule, formatDate } from '@angular/common';
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
@@ -12,12 +12,11 @@ import { FileUpload } from 'primeng/fileupload';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
-import { take } from 'rxjs';
 import { DatePickerModule } from 'primeng/datepicker';
 import { RoleService } from '@/pages/service/role.service';
 import { PermissionService } from '@/pages/service/permission.service';
 import { SearchRequest } from '@/pages/service/base.service';
-
+import { Subject } from 'rxjs';
 
 
 interface UploadEvent {
@@ -37,7 +36,7 @@ interface UploadEvent {
   templateUrl: './user-form.html',
   styleUrl: './user-form.scss',
 })
-export class UserForm implements OnInit {
+export class UserForm implements OnInit, OnDestroy {
   @Input("user") user: any; // user từ backend hoặc localStorage
     avatar!: string;
     editMode: boolean = false;
@@ -61,8 +60,10 @@ export class UserForm implements OnInit {
 
     roleService = inject(RoleService);
     permissionService = inject(PermissionService);
+    private destroy$ = new Subject<void>()
 
-    constructor(private fb: FormBuilder) { }
+    constructor(private fb: FormBuilder) {
+    }
 
     ngOnInit(): void {
 
@@ -87,10 +88,19 @@ export class UserForm implements OnInit {
                 }
             })
 
-
+        console.log(this.mode);
         this.initForm();
         if(this.mode == 'create'){
             this.editMode = true;
+            debugger
+            this.form.patchValue({
+                username: '',
+                name: '',
+                email: '',
+                phone: '',
+                dob: '',
+                status: '',
+            });
             return;
         }
 
@@ -133,11 +143,11 @@ export class UserForm implements OnInit {
 
     private initForm() {
     this.form = this.fb.group({
-        username: [this.user?.username || '', Validators.required],
-        name: [this.user?.name || '', Validators.required],
-        email: [this.user?.email || '', [Validators.required, Validators.email]],
-        phone: [this.user?.phone || '', Validators.pattern(/^0[0-9]{9}$/)],
-        status: [this.user?.status || '', Validators.required],
+        username: [ '', Validators.required],
+        name: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        phone: ['', Validators.pattern(/^0[0-9]{9}$/)],
+        status: ['', Validators.required],
         password: [],
         dob: [],
         permission: [],
@@ -174,7 +184,7 @@ export class UserForm implements OnInit {
             if (this.mode == 'create') {
                 this.userService.create(updatedUser).subscribe({
                     next: res => {
-                        localStorage.setItem('user', JSON.stringify(res?.data))
+                        // localStorage.setItem('user', JSON.stringify(res?.data))
                         this.toast.success('Cập nhật thông tin thành công!')
                         this.onSubmitEvent.emit()
                         this.loading = false;
@@ -187,7 +197,7 @@ export class UserForm implements OnInit {
             }else {
                 this.userService.update(updatedUser).subscribe({
                     next: res => {
-                        localStorage.setItem('user', JSON.stringify(res?.data))
+                        // localStorage.setItem('user', JSON.stringify(res?.data))
                         this.toast.success('Cập nhật thông tin thành công!')
                         this.editMode = false
                     },
@@ -218,4 +228,10 @@ export class UserForm implements OnInit {
             error: (err) => this.toast.error(err)
         });
     }
+
+    ngOnDestroy(): void {
+        this.form.reset();
+        this.form = null!;
+    }
+
 }

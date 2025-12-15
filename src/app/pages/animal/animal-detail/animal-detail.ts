@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { PlantService, PlantType } from '@/pages/service/plant.service';
 import { User, UserService } from '@/pages/service/user.service';
 import { CropSeason } from '@/pages/crop-season/crop-season-list/crop-season-list';
@@ -34,7 +34,7 @@ import { AnimalService, AnimalType } from '@/pages/service/animal.service';
   templateUrl: './animal-detail.html',
   styleUrl: './animal-detail.scss',
 })
-export class AnimalDetail {
+export class AnimalDetail implements OnInit {
     editMode: boolean = false;
     loading: boolean = false;
     readonly : boolean = false;
@@ -61,10 +61,32 @@ export class AnimalDetail {
     constructor(private fb: FormBuilder) { }
 
     ngOnInit(): void {
-
+        console.log("mode",this.mode);
         this.initForm();
         if(this.mode == 'create'){
             this.editMode = true;
+            this.form.patchValue({
+                id: "",
+
+                animalType: "",
+                batchName: "",
+                quantityStart: "",
+                quantityCurrent: "",
+
+                startDate: "",
+                expectedEndDate: "",
+
+                status: "",
+                note: "",
+
+                cropSeasonId:
+                    "",
+
+                locationId:
+                    "",
+                cropSeason: "",
+                location: "",
+            })
             return;
         }
 

@@ -85,6 +85,9 @@ export class InventoryTransactionDetail {
         this.initForm();
         if(this.mode == 'create'){
             this.editMode = true;
+            this.form.patchValue({
+                id: "",
+            })
             return;
         }
 

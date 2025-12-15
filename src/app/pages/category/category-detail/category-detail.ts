@@ -53,6 +53,9 @@ export class CategoryDetail implements OnInit {
         this.initForm();
         if(this.mode == 'create'){
             this.editMode = true;
+            this.form.patchValue({
+                id: "",
+            })
             return;
         }
 

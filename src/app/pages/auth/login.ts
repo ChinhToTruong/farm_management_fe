@@ -11,6 +11,7 @@ import { AuthService } from '@/pages/service/auth.service';
 import { Toast } from 'primeng/toast';
 import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 import { ToastService } from '@/pages/service/toast.service';
+import { NotificationService } from '@/pages/service/notification.service';
 
 @Component({
     selector: 'app-login',
@@ -77,6 +78,7 @@ export class Login {
     private auth = inject(AuthService);
     private router = inject(Router);
     private toast = inject(ToastService);
+    private notificationService = inject(NotificationService)
 
     formLogin = this.fb.group({
         email: ['', Validators.required],
@@ -96,6 +98,7 @@ export class Login {
                         localStorage.setItem('token', accessToken);
                         localStorage.setItem('refreshToken', refreshToken);
                         localStorage.setItem('user', JSON.stringify(user));
+                        this.notificationService.connect();
                         this.router.navigate(['/']);
                     }
                 },

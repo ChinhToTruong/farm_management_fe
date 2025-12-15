@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -6,19 +6,13 @@ import { InputText } from 'primeng/inputtext';
 import { formatDate, NgIf } from '@angular/common';
 import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
-import { UserService } from '@/pages/service/user.service';
-import { AuthService } from '@/pages/service/auth.service';
-import { FileService } from '@/pages/service/file.service';
 import { ToastService } from '@/pages/service/toast.service';
-import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs';
 import { DatePicker } from 'primeng/datepicker';
 import { LocationService } from '@/pages/service/location.service';
 import { SearchRequest } from '@/pages/service/base.service';
 import { CropSeasonService } from '@/pages/service/crop-season.service';
 import { CropSeason } from '@/pages/crop-season/crop-season-list/crop-season-list';
-import { BaseTableService } from '@/pages/service/base.table.service';
-import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
+
 
 @Component({
   selector: 'app-crop-season-detail',
@@ -36,7 +30,7 @@ import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
   templateUrl: './crop-season-detail.html',
   styleUrl: './crop-season-detail.scss',
 })
-export class CropSeasonDetail {
+export class CropSeasonDetail implements OnInit {
     user: any; // user từ backend hoặc localStorage
     avatar!: string;
     editMode: boolean = false;
@@ -70,6 +64,15 @@ export class CropSeasonDetail {
         this.initForm();
         if(this.mode == 'create'){
             this.editMode = true;
+            this.form.patchValue({
+                seasonName: "",
+                startDate:"",
+                endDate: "",
+                type: "",
+                status: "",
+                locationId: "",
+                location: "",
+            })
             return;
         }
 
@@ -182,5 +185,9 @@ export class CropSeasonDetail {
                 })
             }
         }
+    }
+
+    ngOnDestroy(): void {
+
     }
 }

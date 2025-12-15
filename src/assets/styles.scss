@@ -3,3 +3,10 @@
 @use './layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './demo/demo.scss';
+
+
+p-datepicker {
+    input {
+        flex-grow: 1;
+    }
+}

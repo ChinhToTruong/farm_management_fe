@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ResponseData } from './base.service';
+import { NotificationService } from '@/pages/service/notification.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
     private apiUrl = 'http://localhost:8080'; // API backend
     private currentUserSubject = new BehaviorSubject<any>(null);
+    private socketService =  inject(NotificationService)
 
     constructor(private http: HttpClient) {
         // Kiểm tra token khi load app

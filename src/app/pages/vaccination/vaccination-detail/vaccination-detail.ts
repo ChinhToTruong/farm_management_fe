@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AnimalDetail } from '@/pages/animal/animal-detail/animal-detail';
 import { AnimalService, AnimalType } from '@/pages/service/animal.service';
 import { User, UserService } from '@/pages/service/user.service';
@@ -14,6 +14,7 @@ import { Button } from 'primeng/button';
 import { ToastService } from '@/pages/service/toast.service';
 import { VaccinationService } from '@/pages/service/vaccination.service';
 import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
+import { Subject } from 'rxjs';
 
 
 
@@ -48,11 +49,11 @@ export interface Vaccination {
   templateUrl: './vaccination-detail.html',
   styleUrl: './vaccination-detail.scss',
 })
-export class VaccinationDetail implements OnInit {
+export class VaccinationDetail implements OnInit , OnDestroy {
     @Input("mode") mode: string = 'update';
     @Output("onSubmit") onSubmitEvent = new EventEmitter<any>();
     @Input("vaccination")vaccination!: Vaccination;
-
+    private destroy$ = new Subject<void>()
     userOptions!: User[];
     batchOptions!: AnimalType[]
 
@@ -70,10 +71,20 @@ export class VaccinationDetail implements OnInit {
     userService = inject(UserService);
 
     ngOnInit(): void {
-
+        console.log('mode: ', this.mode );
         this.initForm();
         if(this.mode == 'create'){
             this.editMode = true;
+            debugger
+            this.form.patchValue({
+                id: "",
+                userId: '',
+                batchId: '',
+                startDate: '',
+                nextDate: '',
+                note: '',
+                vaccinationName:'',
+            })
             return;
         }
 
@@ -81,6 +92,14 @@ export class VaccinationDetail implements OnInit {
             this.editMode = false;
             this.form.patchValue({
                 id: this.vaccination.id ?? null,
+                userId: this.vaccination.userId ?? null,
+                batchId: this.vaccination.batchId ?? null,
+                startDate: this.vaccination.startDate ?? null,
+                nextDate: this.vaccination.nextDate ?? null,
+                note: this.vaccination.note ?? null,
+                vaccinationName: this.vaccination.vaccinationName ?? null,
+                // user: this.vaccination.user ?? null,
+                // batch: this.vaccination.batchId ?? null,
             })
         }
 
@@ -88,46 +107,38 @@ export class VaccinationDetail implements OnInit {
 
     private initForm() {
         this.form = this.fb.group({
-            id: [this.vaccination?.id ?? null],
+            id: [''],
 
             // --- IDs ---
             userId: [
-                this.vaccination?.userId
-                ?? this.vaccination?.user?.id
-                ?? null,
+                '',
                 Validators.required
             ],
 
 
             batchId: [
-                this.vaccination?.batchId
-                ?? this.vaccination?.batchId
-                ?? null
+               ''
             ],
 
 
             // --- Date ---
             startDate : [
-                this.vaccination?.startDate
-                    ? new Date(this.vaccination.startDate)
-                    : null,
+'',
                 Validators.required
             ],
 
             nextDate: [
-                this.vaccination?.nextDate
-                    ? new Date(this.vaccination.nextDate)
-                    : null,
+               '',
                 Validators.required
             ],
 
-            note: [this.vaccination?.note],
+            note: [''],
 
-            vaccinationName: [this.vaccination?.vaccinationName],
+            vaccinationName: [''],
 
             // --- Transient objects (không submit lên server) ---
-            user: [this.vaccination?.user ?? null],
-            batch: [this.vaccination?.batchId ?? null],
+            user: [],
+            batch: [],
         });
 
 
@@ -195,4 +206,11 @@ export class VaccinationDetail implements OnInit {
             }
         }
     }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+
 }

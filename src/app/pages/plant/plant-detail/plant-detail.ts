@@ -64,6 +64,27 @@ export class PlantDetail {
         this.initForm();
         if(this.mode == 'create'){
             this.editMode = true;
+            this.form.patchValue({
+                id: "",
+
+                plantName: "",
+                plantVariety: "",
+                quantity: "",
+
+                sowDate: "",
+                harvestDate: "",
+
+                status: "",
+                description: "",
+
+                cropSeasonId:
+                    "",
+
+                locationId:
+                    "",
+                cropSeason: "",
+                location: "",
+            })
             return;
         }
 

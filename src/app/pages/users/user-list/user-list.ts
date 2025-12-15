@@ -56,6 +56,7 @@ export class UserList extends BaseTableService<any> implements OnInit {
 
     onNew() {
         this.visible = true
+        this.mode = 'create';
     }
 
     onSubmit() {
