@@ -75,19 +75,23 @@
                     Username is required.
                 </small>
             </div>
-
-            <div >
-                <p-float-label class="m-2">
-                    <label for="dob" class="font-bold block m-2"> Button </label>
-                    <p-datepicker [panelStyle]="{ 'font-size': '12px', padding: '4px' }"
-                                  class="w-full" formControlName="dob"
-                                  [showIcon]="true" inputId="dob"
-                                  [showOnFocus]="false"
-                                  appendTo="body"
-                                  [disabled]="!editMode"
-                    ></p-datepicker>
-                </p-float-label>
+            
+            <div>
+                <p-floatlabel class="m-2">
+                    <p-datePicker id="dob" formControlName="dob"
+                                class="w-full"
+                                [iconDisplay]="'input'"
+                                [readonlyInput]="true"
+                                appendTo="body"
+                                [disabled]="!editMode"></p-datePicker>
+                    <label for="dob">Ngày sinh</label>
+                </p-floatlabel>
+                <small class="text-red-500 m-2"
+                    *ngIf="form.get('startDate')?.invalid && form.get('startDate')?.touched">
+                    startDate is required.
+                </small>
             </div>
+
 
             <p-select [options]="status" placeholder="Status" class="w-full md:w-56 m-2" formControlName="status"
                 [disabled]="!editMode" />

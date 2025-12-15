@@ -61,7 +61,6 @@ export class InventoryTransactionList extends BaseTableService<InventoryTransact
     onNew() {
         this.visible = true
         this.mode = 'create';
-        console.log(this.mode);
     }
 
     onSubmit() {
