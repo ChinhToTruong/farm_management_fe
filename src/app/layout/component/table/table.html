@@ -1,12 +1,12 @@
 <p-toolbar styleClass="mb-6">
     <ng-template #start>
-        <p-button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
-        <p-button severity="secondary" label="Delete" icon="pi pi-trash" outlined (onClick)="onDeleteList()" [disabled]="!selectedItems || !selectedItems.length" />
+        <p-button label="Thêm mới" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+        <p-button severity="secondary" label="Xoá" icon="pi pi-trash" outlined (onClick)="onDeleteList()" [disabled]="!selectedItems || !selectedItems.length" />
     </ng-template>
 
     @if (showExport) {
         <ng-template #end>
-            <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+            <p-button label="Xuất báo cáo" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
         </ng-template>
     }
 </p-toolbar>
@@ -33,7 +33,7 @@
             <h5 class="m-0">{{ title }}</h5>
             <p-iconfield>
                 <p-inputicon class="pi pi-search" />
-                <input #searchInput [formControl]="searchControl" pInputText type="text" placeholder="Search..." />
+                <input #searchInput [formControl]="searchControl" pInputText type="text" placeholder="Tìm kiếm..." />
             </p-iconfield>
         </div>
     </ng-template>
@@ -54,7 +54,7 @@
             }
 
             <!-- Cột actions -->
-            <th style="width: 60px" class="sticky-right">Action</th>
+            <th style="width: 60px" class="sticky-right">Thao tác</th>
         </tr>
     </ng-template>
     <ng-template #body let-rowData let-columns="columns">

@@ -32,6 +32,12 @@ export interface LocationModel {
     description: string;
 }
 
+export const LOCATION_TYPE_LABEL: Record<string, string> = {
+    ANIMAL: 'Chăn nuôi',
+    CROP: 'Trồng trọt',
+    MIXED: 'Kết hợp'
+};
+
 
 @Component({
   selector: 'app-location',
@@ -116,7 +122,8 @@ export class LocationList extends BaseTableService<LocationType>{
                 this.locations = result.data.content.map(i => {
                     return {
                         ...i,
-                        username: i.user.name
+                        username: i.user.name,
+                        type: LOCATION_TYPE_LABEL[i.type] ?? i.type
                     };
                 })
                 this.total = result.data.size

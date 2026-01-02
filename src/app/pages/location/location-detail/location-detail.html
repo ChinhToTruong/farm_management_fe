@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4 col-span-12">
-    <span class="text-xl font-semibold mb-4">Location Information</span>
+    <span class="text-xl font-semibold mb-4">Thông tin khu vực</span>
     <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <!-- Location Name -->
@@ -68,8 +68,8 @@
         @if (!readonly) {
             <!-- Buttons -->
             <div class="md:col-span-2 flex gap-2 justify-end mt-4">
-                <p-button [label]="editMode ? 'Cancel' : 'Edit'" (click)="toggleEdit()"></p-button>
-                <p-button *ngIf="editMode" type="submit" label="Save"></p-button>
+                <p-button [label]="editMode ? 'Huỷ bỏ' : 'Chỉnh sửa'" (click)="toggleEdit()"></p-button>
+                <p-button *ngIf="editMode" type="submit" label="Lưu"></p-button>
             </div>
         }
 

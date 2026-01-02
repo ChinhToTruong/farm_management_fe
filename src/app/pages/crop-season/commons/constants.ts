@@ -38,7 +38,7 @@ export const seasonColumns: Column[] = [
         sortable: true
     },
     {
-        field: 'location.locationName',
+        field: 'locationId',
         type: 'text',
         operator: 'like',
         header: 'Khu vực',

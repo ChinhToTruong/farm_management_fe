@@ -2,13 +2,6 @@ import { Column } from "@/commons/type/app.table.type";
 
 export const col: Column[] = [
     {
-        field: 'id',
-        type: 'text',
-        operator: 'like',
-        header: 'ID',
-        sortable: true
-    },
-    {
         field: 'name',
         type: 'text',
         operator: 'like',

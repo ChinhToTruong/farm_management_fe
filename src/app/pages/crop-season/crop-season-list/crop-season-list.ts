@@ -1,14 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BaseTableService } from '@/pages/service/base.table.service';
 import { ToastService } from '@/pages/service/toast.service';
 import { SearchRequest } from '@/pages/service/base.service';
 import { AppTable } from '@/layout/component/table/table';
 import { Dialog } from 'primeng/dialog';
-import { seasonColumns } from '@/pages/crop-season/commons/constants';
+import { BASE_SEARCH_REQUEST, seasonColumns } from '@/pages/crop-season/commons/constants';
 import { Column } from '@/commons/type/app.table.type';
 import { CropSeasonDetail } from '@/pages/crop-season/crop-season-detail/crop-season-detail';
 import { LocationType } from '@/commons/type/location';
 import { CropSeasonService } from '@/pages/service/crop-season.service';
+import { LocationService } from '@/pages/service/location.service';
 
 
 export interface CropSeason {
@@ -20,15 +21,32 @@ export interface CropSeason {
     startDate: string;          // LocalDateTime => string ISO
     endDate: string;            // LocalDateTime => string ISO
 
-    type: 'ANIMAL' | 'CROP';
+    type: CropSeasonType;
 
-    status?: 'ACTIVE' | 'COMPLETED' | 'PAUSED';
+    status?: CropSeasonStatus;
 
     locationId?: number;
 
     location?: LocationType;        // Location interface
     description?: string;
 }
+export type CropSeasonType = 'ANIMAL' | 'CROP';
+export type CropSeasonStatus = 'ACTIVE' | 'COMPLETED' | 'PAUSED';
+
+export const CROP_SEASON_TYPE_LABEL: Record<CropSeasonType, string> = {
+    ANIMAL: 'Chăn nuôi',
+    CROP: 'Trồng trọt'
+};
+
+export const CROP_SEASON_STATUS_LABEL: Record<
+    CropSeasonStatus,
+    string
+> = {
+    ACTIVE: 'Đang hoạt động',
+    COMPLETED: 'Hoàn thành',
+    PAUSED: 'Tạm dừng'
+};
+
 @Component({
   selector: 'app-crop-season-list',
     imports: [
@@ -39,7 +57,7 @@ export interface CropSeason {
   templateUrl: './crop-season-list.html',
   styleUrl: './crop-season-list.scss',
 })
-export class CropSeasonList extends BaseTableService<CropSeason>{
+export class CropSeasonList extends BaseTableService<CropSeason> implements OnInit {
     protected total: any;
     protected data!: any
     protected totalPages!: any;
@@ -48,6 +66,8 @@ export class CropSeasonList extends BaseTableService<CropSeason>{
     mode: 'create' | 'update' = 'create';
     protected cols!: Column[];
     cropSeason!: CropSeason;
+    locationService = inject(LocationService);
+    locations: Map<number, String> = new Map<number, String>();
 
     constructor(protected cropSeasonService: CropSeasonService) {
         super(cropSeasonService);
@@ -56,6 +76,13 @@ export class CropSeasonList extends BaseTableService<CropSeason>{
 
 
     ngOnInit() {
+        this.locationService.search(BASE_SEARCH_REQUEST).subscribe({
+            next: response => {
+                response.data.content.forEach((item) => {
+                    this.locations.set(item.id, item.locationName);
+                })
+            }
+        })
         this.cols= seasonColumns
         this.filter()
     }
@@ -93,7 +120,14 @@ export class CropSeasonList extends BaseTableService<CropSeason>{
 
         this.cropSeasonService.search(par).subscribe({
             next: (response: any) => {
-                this.data = response.data.content;
+                this.data = response.data.content.map((i: CropSeason) => ({
+                    ...i,
+                    type: CROP_SEASON_TYPE_LABEL[i.type],
+                    status: i.status
+                        ? CROP_SEASON_STATUS_LABEL[i.status]
+                        : '',
+                    locationId: i.locationId && this.locations.get(i.locationId) || ''
+                }));
                 this.totalPages = response.data.totalPages;
                 this.total = response.data.size;
             }

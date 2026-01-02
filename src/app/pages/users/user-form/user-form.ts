@@ -120,6 +120,8 @@ export class UserForm implements OnInit, OnDestroy {
                         phone: this.user?.phone,
                         dob: formatDate(this.user?.dob, 'dd/MM/yyyy HH:mm:ss', 'en-US'),
                         status: this.user?.status,
+                        role: this.user?.role.id,
+                        permission: this.user?.role.permissions[0].id,
                     });
 
                     if (this.user?.avatar) {
