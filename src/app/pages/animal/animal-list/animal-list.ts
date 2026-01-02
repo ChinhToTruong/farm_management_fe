@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AppTable } from '@/layout/component/table/table';
 import { Dialog } from 'primeng/dialog';
 import { Column } from '@/commons/type/app.table.type';
@@ -9,9 +9,10 @@ import { CropSeasonService } from '@/pages/service/crop-season.service';
 import { LocationService } from '@/pages/service/location.service';
 import { SearchRequest } from '@/pages/service/base.service';
 import { BaseTableService } from '@/pages/service/base.table.service';
-import { AnimalService, AnimalType } from '@/pages/service/animal.service';
+import { ANIMAL_STATUS_LABEL, AnimalService, AnimalType } from '@/pages/service/animal.service';
 import { AnimalDetail } from '@/pages/animal/animal-detail/animal-detail';
 import { col } from '@/pages/animal/commons/constants';
+import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
 
 @Component({
   selector: 'app-animal-list',
@@ -23,10 +24,12 @@ import { col } from '@/pages/animal/commons/constants';
   templateUrl: './animal-list.html',
   styleUrl: './animal-list.scss',
 })
-export class AnimalList extends BaseTableService<AnimalType>{
+export class AnimalList extends BaseTableService<AnimalType> implements OnInit {
     entities: AnimalType[] = [];
     cols: any[] = []
     statuses: any[] = []
+    locationMap = new Map<number, string>();
+    seasonMap = new Map<number, string>();
 
     title!: string;
     columns!: Column[];
@@ -51,6 +54,18 @@ export class AnimalList extends BaseTableService<AnimalType>{
 
 
     ngOnInit() {
+        this.locationService.search(BASE_SEARCH_REQUEST).subscribe(res => {
+            res.data.content.forEach(l =>
+                this.locationMap.set(l.id, l.locationName)
+            );
+        });
+        this.cropSeasonService.search(BASE_SEARCH_REQUEST).subscribe(res => {
+            res.data.content.forEach(s =>{
+                if (s.id != null && s.seasonName) {
+                    this.seasonMap.set(s.id, s.seasonName);
+                }                }
+            );
+        });
         this.cols= col
         this.filter()
     }
@@ -91,6 +106,19 @@ export class AnimalList extends BaseTableService<AnimalType>{
                 this.entities = result.data.content.map(i => {
                     return {
                         ...i,
+                        statusName: i.status
+                            ? ANIMAL_STATUS_LABEL[i.status]
+                            : '',
+                        seasonName:
+                            i.cropSeasonId != null
+                                ? this.seasonMap.get(i.cropSeasonId) ?? ''
+                                : '',
+
+                        locationName:
+                            i.locationId != null
+                                ? this.locationMap.get(i.locationId) ?? ''
+                                : ''
+
                     };
                 })
                 this.total = result.data.size

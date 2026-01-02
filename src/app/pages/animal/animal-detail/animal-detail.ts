@@ -45,6 +45,11 @@ export class AnimalDetail implements OnInit {
     userOptions!: User[];
     cropSeasonOptions!: CropSeason[];
     locationOptions!: LocationType[];
+    statusOptions!: ({ label: string; value: string } | { label: string; value: string } | {
+        label: string;
+        value: string
+    })[];
+
 
     status!: string[];
 
@@ -168,6 +173,12 @@ export class AnimalDetail implements OnInit {
             }
         );
 
+        this.statusOptions = [
+            { label: 'Đang nuôi', value: 'ACTIVE' },
+            { label: 'Đã bán', value: 'SOLD' },
+            { label: 'Hoàn thành', value: 'COMPLETED' },
+            { label: 'Đã hủy', value: 'CANCELED' }
+        ]
         this.status = ["ACTIVE", "SOLD", "COMPLETED", "CANCELED"];
 
         this.cropSeasonService.search(BASE_SEARCH_REQUEST).subscribe({

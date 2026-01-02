@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CropSeason } from '@/pages/crop-season/crop-season-list/crop-season-list';
 import { LocationType } from '@/commons/type/location';
+import { PlantStatus } from '@/pages/plant/plant-list/plant-list';
 
 
 export interface PlantType {
@@ -12,10 +13,13 @@ export interface PlantType {
     quantity?: number;
     sowDate?: string;
     harvestDate?: string;
-    status?: 'GROWING' | 'HARVESTED' | 'FAILD';
-    description?: string;
+    status?: PlantStatus;
+    statusName?: string;
+    notes?: string;
 
     cropSeasonId?: number;
+    cropSeasonName?: string;
+    locationName?: string;
     locationId?: number;
 
     cropSeason?: CropSeason;

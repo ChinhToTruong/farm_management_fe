@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4 col-span-12">
-    <span class="text-xl font-semibold mb-4">Animal Information</span>
+    <span class="text-xl font-semibold mb-4">Thông tin vật nuôi</span>
     <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <!-- Crop Season -->
@@ -92,11 +92,11 @@
                               [readonlyInput]="true"
                               appendTo="body"
                               [disabled]="!editMode"></p-datePicker>
-                <label for="startDate">Ngày gieo trồng</label>
+                <label for="startDate">Ngày bắt đầu</label>
             </p-floatlabel>
             <small class="text-red-500 m-2"
                    *ngIf="form.get('startDate')?.invalid && form.get('startDate')?.touched">
-                startDate is required.
+                Ngày bắt đầu bắt buộc
             </small>
         </div>
 
@@ -113,7 +113,7 @@
             </p-floatlabel>
             <small class="text-red-500 m-2"
                    *ngIf="form.get('expectedEndDate')?.invalid && form.get('expectedEndDate')?.touched">
-                expectedEndDate is required.
+                Ngày thu hoạch bắt buộc
             </small>
         </div>
 
@@ -122,7 +122,7 @@
             <label class="font-semibold">Trạng thái</label>
             <p-select
                 formControlName="status"
-                [options]="status"
+                [options]="statusOptions"
                 class="w-full m-2">
             </p-select>
         </div>

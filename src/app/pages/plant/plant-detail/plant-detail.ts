@@ -55,6 +55,10 @@ export class PlantDetail {
     userService = inject(UserService);
     cropSeasonService = inject(CropSeasonService);
     plantService = inject(PlantService);
+    statusOptions!: ({ label: string; value: string } | { label: string; value: string } | {
+        label: string;
+        value: string
+    })[];
 
 
     constructor(private fb: FormBuilder) { }
@@ -101,7 +105,7 @@ export class PlantDetail {
                 harvestDate: this.plant.harvestDate ? new Date(this.plant.harvestDate) : null,
 
                 status: this.plant.status ?? 'GROWING',
-                description: this.plant.description ?? null,
+                notes: this.plant.notes ?? null,
 
                 cropSeasonId:
                     this.plant.cropSeasonId,
@@ -140,6 +144,20 @@ export class PlantDetail {
         );
 
         this.status = ["GROWING", "HARVESTED", "FAILD"];
+        this.statusOptions = [
+            {
+                label: 'Đang nuôi trồng',
+                value: 'GROWING',
+            },
+            {
+                label: 'Thu hoạch',
+                value: 'HARVESTED',
+            },
+            {
+                label: 'Thất bại',
+                value: 'FAILD',
+            }
+        ]
 
         this.cropSeasonService.search(BASE_SEARCH_REQUEST).subscribe({
             next: response => {

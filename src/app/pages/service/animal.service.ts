@@ -5,6 +5,15 @@ import { CropSeason } from '@/pages/crop-season/crop-season-list/crop-season-lis
 import { LocationType } from '@/commons/type/location';
 
 
+export type AnimalStatus = 'ACTIVE' | 'SOLD' | 'COMPLETED' | 'CANCELED';
+
+export const ANIMAL_STATUS_LABEL: Record<AnimalStatus, string> = {
+    ACTIVE: 'Đang nuôi',
+    SOLD: 'Đã bán',
+    COMPLETED: 'Hoàn thành',
+    CANCELED: 'Đã hủy'
+};
+
 export interface AnimalType {
     id?: number;
     batchName?: string;
@@ -13,11 +22,14 @@ export interface AnimalType {
     quantityCurrent?: number;
     startDate?: string;
     expectedEndDate?: string;
-    status?: 'ACTIVE'|'SOLD'|'COMPLETED'|'CANCELED';
+    status?: AnimalStatus;
+    statusName?: string;
     note?: string;
 
     cropSeasonId?: number;
+    seasonName?: string;
     locationId?: number;
+    locationName?: string;
 
     cropSeason?: CropSeason;
     location?: LocationType;

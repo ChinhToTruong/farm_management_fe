@@ -1,7 +1,7 @@
 import { User } from '@/pages/service/user.service';
 
 export interface LocationType {
-    id?: string; // từ BaseEntity
+    id?: number; // từ BaseEntity
     createdAt?: string;
     updatedAt?: string;
 

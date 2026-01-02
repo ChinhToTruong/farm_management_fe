@@ -1,4 +1,4 @@
-<app-table [title]="title" [columns]="cols" [data]="entities" [showExport]="true" [id]="id" [searchField]="'name'"
+<app-table [title]="title" [columns]="cols" [data]="entities" [showExport]="true" [id]="id" [searchField]="'plantName'"
            [paginator]="true"
            (selectionChanged)="selectionChange($event)" (onDeleteList)="onDeleteList($event)" (onDelete)="onDelete($event)"
            (onSearch)="onSearch($event)" (onEdit)="onEdit($event)" (onNew)="onNew()" [rowHover]="false" [total]="total" />

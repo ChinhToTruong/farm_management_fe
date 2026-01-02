@@ -2,21 +2,14 @@ import { Column } from '@/commons/type/app.table.type';
 
 export const col: Column[] = [
     {
-        field: 'id',
-        type: 'text',
-        operator: 'like',
-        header: 'ID',
-        sortable: true
-    },
-    {
-        field: 'season',
+        field: 'seasonName',
         type: 'text',
         operator: 'like',
         header: 'Vụ mùa',
         sortable: true
     },
     {
-        field: 'location',
+        field: 'locationName',
         type: 'text',
         operator: 'like',
         header: 'Khu vực',
@@ -65,7 +58,7 @@ export const col: Column[] = [
         sortable: true
     },
     {
-        field: 'status',
+        field: 'statusName',
         type: 'text',
         operator: 'equal',     // enum
         header: 'Trạng thái',

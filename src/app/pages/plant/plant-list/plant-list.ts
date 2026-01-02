@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AppTable } from '@/layout/component/table/table';
 import { Dialog } from 'primeng/dialog';
 import { Column } from '@/commons/type/app.table.type';
@@ -14,6 +14,15 @@ import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
 import { CropSeasonService } from '@/pages/service/crop-season.service';
 import { LocationService } from '@/pages/service/location.service';
 
+
+export type PlantStatus = 'GROWING' | 'HARVESTED' | 'FAILD';
+
+export const PLANT_STATUS_LABEL: Record<PlantStatus, string> = {
+    GROWING: 'Đang trồng',
+    HARVESTED: 'Đã thu hoạch',
+    FAILD: 'Thất bại'
+};
+
 @Component({
   selector: 'app-plant-list',
     imports: [
@@ -24,10 +33,12 @@ import { LocationService } from '@/pages/service/location.service';
   templateUrl: './plant-list.html',
   styleUrl: './plant-list.scss',
 })
-export class PlantList extends BaseTableService<PlantType>{
+export class PlantList extends BaseTableService<PlantType> implements OnInit {
     entities: PlantType[] = [];
     cols: any[] = []
     statuses: any[] = []
+    locationMap = new Map<number, string>();
+    seasonMap = new Map<number, string>();
 
     title!: string;
     columns!: Column[];
@@ -52,6 +63,18 @@ export class PlantList extends BaseTableService<PlantType>{
 
 
     ngOnInit() {
+        this.locationService.search(BASE_SEARCH_REQUEST).subscribe(res => {
+            res.data.content.forEach(l =>
+                this.locationMap.set(l.id, l.locationName)
+            );
+        });
+        this.cropSeasonService.search(BASE_SEARCH_REQUEST).subscribe(res => {
+            res.data.content.forEach(s =>{
+                if (s.id != null && s.seasonName) {
+                    this.seasonMap.set(s.id, s.seasonName);
+                }                }
+            );
+        });
         this.cols= col
         this.filter()
     }
@@ -92,6 +115,19 @@ export class PlantList extends BaseTableService<PlantType>{
                 this.entities = result.data.content.map(i => {
                     return {
                         ...i,
+                        statusName: i.status
+                            ? PLANT_STATUS_LABEL[i.status]
+                            : '',
+
+                        locationName:
+                            i.locationId != null
+                                ? this.locationMap.get(i.locationId) ?? ''
+                                : '',
+
+                        cropSeasonName:
+                            i.cropSeasonId != null
+                                ? this.seasonMap.get(i.cropSeasonId) ?? ''
+                                : ''
                     };
                 })
                 this.total = result.data.size

@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4 col-span-12">
-    <span class="text-xl font-semibold mb-4">Plant Information</span>
+    <span class="text-xl font-semibold mb-4">Thông tin cây trồng</span>
         <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             <!-- Crop Season -->
@@ -89,7 +89,7 @@
                 </p-floatlabel>
                 <small class="text-red-500 m-2"
                        *ngIf="form.get('sowDate')?.invalid && form.get('sowDate')?.touched">
-                    sowDate is required.
+                    Ngày gieo trồng bắt buộc
                 </small>
             </div>
 
@@ -106,7 +106,7 @@
                 </p-floatlabel>
                 <small class="text-red-500 m-2"
                        *ngIf="form.get('harvestDate')?.invalid && form.get('harvestDate')?.touched">
-                    harvestDate is required.
+                    Ngày thu hoạch bắt buộc
                 </small>
             </div>
 
@@ -115,7 +115,7 @@
                 <label class="font-semibold">Trạng thái</label>
                 <p-select
                     formControlName="status"
-                    [options]="status"
+                    [options]="statusOptions"
                     class="w-full">
                 </p-select>
             </div>

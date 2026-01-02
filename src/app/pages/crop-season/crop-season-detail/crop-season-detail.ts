@@ -72,6 +72,7 @@ export class CropSeasonDetail implements OnInit {
                 status: "",
                 locationId: "",
                 location: "",
+                description: "",
             })
             return;
         }
@@ -82,7 +83,7 @@ export class CropSeasonDetail implements OnInit {
                 this.cropSeasonService.getById(this.cropSeason.id).subscribe({
                     next: response => {
                         this.cropSeason = response.data
-                        console.log(response.data);
+                        console.log(response.data.description);
                         this.form.patchValue({
                             seasonName: this.cropSeason.seasonName,
                             startDate: formatDate(this.cropSeason.startDate, 'dd/MM/yyyy HH:mm:ss', 'en-US'),
