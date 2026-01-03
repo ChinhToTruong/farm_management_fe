@@ -16,18 +16,32 @@ import { CropSeason } from '@/pages/crop-season/crop-season-list/crop-season-lis
 import { PlantService, PlantType } from '@/pages/service/plant.service';
 import { CropSeasonService } from '@/pages/service/crop-season.service';
 
+
+export type WorkDiaryStatus = 'PENDING' | 'DONE' | 'DELAYED';
+export const WORK_DIARY_STATUS_LABEL: Record<WorkDiaryStatus, string> = {
+    PENDING: 'Chờ thực hiện',
+    DONE: 'Hoàn thành',
+    DELAYED: 'Trì hoãn'
+};
+
+
 export class WorkDiary {
     id?: number;           // nếu BaseEntity có id
     createdAt?: string;    // nếu BaseEntity có createdAt
     updatedAt?: string;    // nếu BaseEntity có updatedAt
 
     userId?: number;
+    userName?: string;
 
     cropSeasonId?: number;
 
+    cropSeasonName?: string;
+
     batchId?: number;
+    batchName?: string;
 
     plantId?: number;
+    plantName?: string;
 
     workDate?: string;      // dạng dd/MM/yyyy HH:mm:ss hoặc ISO
 
@@ -35,7 +49,8 @@ export class WorkDiary {
 
     description?: string | null;
 
-    status?: "PENDING" | "DONE" | "DELAYED";
+    status?: WorkDiaryStatus;
+    statusName?: string;
 
 
     user!: User;
@@ -64,7 +79,10 @@ export class WorkDiaryDetail implements OnInit {
     @Output("onSubmit") onSubmitEvent = new EventEmitter<any>();
     @Input("work-diary")workDiary!: WorkDiary;
 
-    statusOptions!: string[];
+    statusOptions!: ({ label: string; value: string } | { label: string; value: string } | {
+        label: string;
+        value: string
+    })[];
     cropSeasonOptions!: CropSeason[];
     userOptions!: User[];
 
@@ -101,6 +119,14 @@ export class WorkDiaryDetail implements OnInit {
             this.editMode = false;
             this.form.patchValue({
                 id: this.workDiary.id ?? null,
+                userId: this.workDiary.userId,
+                cropSeasonId: this.workDiary.cropSeasonId,
+                batchId: this.workDiary.batchId,
+                plantId: this.workDiary.plantId,
+                workDate: this.workDiary.workDate,
+                taskName: this.workDiary.taskName,
+                description: this.workDiary.description,
+                status: this.workDiary.status,
             })
         }
 
@@ -109,65 +135,58 @@ export class WorkDiaryDetail implements OnInit {
 
     private initForm() {
         this.form = this.fb.group({
-            id: [this.workDiary?.id ?? null],
+            id: [""],
 
             // --- IDs ---
             userId: [
-                this.workDiary?.userId
-                ?? this.workDiary?.user?.id
-                ?? null,
+                "",
                 Validators.required
             ],
 
             cropSeasonId: [
-                this.workDiary?.cropSeasonId
-                ?? this.workDiary?.cropSeason?.id
-                ?? null,
                 Validators.required
             ],
 
             batchId: [
-                this.workDiary?.batchId
-                ?? this.workDiary?.batchId
-                ?? null
+                ""
             ],
 
             plantId: [
-                this.workDiary?.plantId
-                ?? this.workDiary?.plant?.id
-                ?? null
+                ''
             ],
 
             // --- Date ---
             workDate: [
-                this.workDiary?.workDate
-                    ? new Date(this.workDiary.workDate)
-                    : null,
+                '',
                 Validators.required
             ],
 
             // --- Required fields ---
             taskName: [
-                this.workDiary?.taskName ?? null,
+                '',
                 Validators.required
             ],
 
             status: [
-                this.workDiary?.status ?? 'PENDING',
+                'PENDING',
                 Validators.required
             ],
 
             // --- Optional ---
-            description: [this.workDiary?.description ?? null],
+            description: [''],
 
             // --- Transient objects (không submit lên server) ---
-            user: [this.workDiary?.user ?? null],
-            cropSeason: [this.workDiary?.cropSeason ?? null],
-            batch: [this.workDiary?.batchId ?? null],
-            plant: [this.workDiary?.plant ?? null]
+            user: [''],
+            cropSeason: [''],
+            batch: [''],
+            plant: ['']
         });
 
-        this.statusOptions = ["PENDING" , "DONE" , "DELAYED"];
+        this.statusOptions = [
+            { label: 'Chờ xử lý', value: 'PENDING' },
+            { label: 'Hoàn thành', value: 'DONE' },
+            { label: 'Trì hoãn', value: 'DELAYED' }
+        ];
 
         this.cropSeasonService.search(BASE_SEARCH_REQUEST).subscribe({
             next: response => {

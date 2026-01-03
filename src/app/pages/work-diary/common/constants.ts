@@ -2,35 +2,28 @@ import { Column } from '@/commons/type/app.table.type';
 
 export const workDiaryColumns: Column[] = [
     {
-        field: 'id',
-        type: 'text',
-        operator: 'like',
-        header: 'ID',
-        sortable: true
-    },
-    {
-        field: 'userId',
+        field: 'userName',
         type: 'text',
         operator: 'like',
         header: 'Người thực hiện (ID)',
         sortable: true
     },
     {
-        field: 'cropSeasonId',
+        field: 'cropSeasonName',
         type: 'text',
         operator: 'like',
         header: 'Vụ mùa',
         sortable: true
     },
     {
-        field: 'batchId',
+        field: 'batchName',
         type: 'text',
         operator: 'like',
         header: 'Đàn vật nuôi',
         sortable: true
     },
     {
-        field: 'plantId',
+        field: 'plantName',
         type: 'text',
         operator: 'like',
         header: 'Cây trồng',
@@ -58,7 +51,7 @@ export const workDiaryColumns: Column[] = [
         sortable: false
     },
     {
-        field: 'status',
+        field: 'statusName',
         type: 'text',
         operator: 'like',
         header: 'Trạng thái',
