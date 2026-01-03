@@ -63,6 +63,8 @@ export class CategoryDetail implements OnInit {
             this.editMode = false;
             this.form.patchValue({
                 id: this.category.id ?? null,
+                name: this.category.name,
+                description: this.category.description,
             })
         }
 
@@ -71,12 +73,12 @@ export class CategoryDetail implements OnInit {
 
     private initForm() {
         this.form = this.fb.group({
-            id: [this.category?.id ?? null],
+            id: [''],
 
-            name: [this.category?.name ?? null],
+            name: [''],
 
             // --- Optional ---
-            description: [this.category?.description ?? null],
+            description: [''],
         });
 
     }

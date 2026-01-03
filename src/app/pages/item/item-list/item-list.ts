@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BaseTableService } from '@/pages/service/base.table.service';
 import { Item, ItemDetail } from '@/pages/item/item-detail/item-detail';
 import { Column } from '@/commons/type/app.table.type';
@@ -10,6 +10,9 @@ import { Category } from '@/pages/category/category-detail/category-detail';
 import { AppTable } from '@/layout/component/table/table';
 import { Dialog } from 'primeng/dialog';
 import { itemColumns } from '@/pages/item/common/constants';
+import { LocationService } from '@/pages/service/location.service';
+import { CategoryService } from '@/pages/service/category.service';
+import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
 
 @Component({
   selector: 'app-item-list',
@@ -21,7 +24,7 @@ import { itemColumns } from '@/pages/item/common/constants';
   templateUrl: './item-list.html',
   styleUrl: './item-list.scss',
 })
-export class ItemList extends BaseTableService<Item>{
+export class ItemList extends BaseTableService<Item> implements OnInit{
     entities: Item[] = [];
     cols: any[] = []
     statuses: any[] = []
@@ -37,6 +40,10 @@ export class ItemList extends BaseTableService<Item>{
     selectedEntity!: Item;
     locations!: LocationType[]
     categoryOptions!: Category[]
+    locationMap = new Map<number, string>()
+    categoryMap = new Map<number, string>()
+    locationService = inject(LocationService);
+    categoryService = inject(CategoryService);
 
 
     constructor(override service: ItemService) {
@@ -46,6 +53,25 @@ export class ItemList extends BaseTableService<Item>{
 
 
     ngOnInit() {
+        this.locationService.search(BASE_SEARCH_REQUEST).subscribe({
+            next: data => {
+                data.data.content.forEach(item => {
+                    if (item.id){
+                        this.locationMap.set(item.id, item.locationName);
+                    }
+                })
+            }
+        })
+
+        this.categoryService.search(BASE_SEARCH_REQUEST).subscribe({
+            next: data => {
+                data.data.content.forEach(item => {
+                    if (item.id && item.name){
+                        this.categoryMap.set(item.id, item.name);
+                    }
+                })
+            }
+        })
         this.cols= itemColumns
         this.filter()
     }
@@ -86,6 +112,8 @@ export class ItemList extends BaseTableService<Item>{
                 this.entities = result.data.content.map(i => {
                     return {
                         ...i,
+                        categoryName: i.categoryId ? this.categoryMap.get(i.categoryId) : '',
+                        locationName: i.locationId ? this.locationMap.get(i.locationId) : ''
                     };
                 })
                 this.total = result.data.size

@@ -2,14 +2,7 @@ import { Column } from '@/commons/type/app.table.type';
 
 export const vaccinationColumns: Column[] = [
     {
-        field: 'id',
-        type: 'text',
-        operator: 'like',
-        header: 'ID',
-        sortable: true
-    },
-    {
-        field: 'animalBatchId',
+        field: 'batchName',
         type: 'text',
         operator: 'like',
         header: 'Đàn vật nuôi (ID)',
@@ -23,7 +16,7 @@ export const vaccinationColumns: Column[] = [
         sortable: true
     },
     {
-        field: 'userId',
+        field: 'userName',
         type: 'text',
         operator: 'like',
         header: 'Người thực hiện (ID)',

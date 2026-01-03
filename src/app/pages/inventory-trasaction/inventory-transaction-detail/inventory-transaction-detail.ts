@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { Item } from '@/pages/item/item-detail/item-detail';
 import { AnimalService, AnimalType } from '@/pages/service/animal.service';
 import { PlantService, PlantType } from '@/pages/service/plant.service';
@@ -16,14 +16,20 @@ import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
 import { InventoryTransactionService } from '@/pages/service/inventory-transaction.service';
 import { ItemService } from '@/pages/service/item.service';
 
-
+export type InventoryTransactionType = 'IMPORT' | 'CONSUME' | 'ADJUST';
+export const INVENTORY_TRANSACTION_TYPE_LABEL: Record<InventoryTransactionType, string> = {
+    IMPORT: 'Nhập kho',
+    CONSUME: 'Xuất / Sử dụng',
+    ADJUST: 'Điều chỉnh tồn kho'
+};
 export interface InventoryTransaction {
     id?: number;  // từ BaseEntity
 
     itemId: number | null;       // ID vật tư
     item?: Item | null;          // transient
+    itemName?: string;
 
-    transactionType: 'IMPORT' | 'CONSUME' | 'ADJUST'; // Loại giao dịch
+    transactionType: InventoryTransactionType; // Loại giao dịch
 
     quantity: number | null;     // Số lượng thay đổi
     unitPrice?: number | null;   // Giá mỗi đơn vị
@@ -34,9 +40,11 @@ export interface InventoryTransaction {
 
     relatedAnimalBatchId?: number | null; // Nếu liên quan đến đàn vật nuôi
     relatedAnimalBatch?: AnimalType | null; // transient
+    batchName?: string | null;
 
     relatedPlantId?: number | null;  // Nếu liên quan đến cây trồng
     relatedPlant?: PlantType | null;     // transient
+    plantName?: string | null;
 }
 
 @Component({
@@ -54,7 +62,7 @@ export interface InventoryTransaction {
   templateUrl: './inventory-transaction-detail.html',
   styleUrl: './inventory-transaction-detail.scss',
 })
-export class InventoryTransactionDetail {
+export class InventoryTransactionDetail implements OnInit {
     @Input("mode") mode: string = 'update';
     @Output("onSubmit") onSubmitEvent = new EventEmitter<any>();
     @Input("transaction")transaction!: InventoryTransaction;
@@ -71,7 +79,10 @@ export class InventoryTransactionDetail {
     toast = inject(ToastService)
     form!: FormGroup;
     fb = inject(FormBuilder);
-    transactionTypeOptions!: string[]
+    transactionTypeOptions!: {
+        label: string;
+        value: InventoryTransactionType;
+    }[];
     inventoryTransactionService = inject(InventoryTransactionService);
 
     itemService = inject(ItemService);
@@ -81,7 +92,12 @@ export class InventoryTransactionDetail {
 
 
     ngOnInit(): void {
-
+        this.transactionTypeOptions = Object.entries(INVENTORY_TRANSACTION_TYPE_LABEL).map(
+            ([value, label]) => ({
+                label,                           // 👈 hiển thị: Nhập kho / Xuất / Điều chỉnh
+                value: value as InventoryTransactionType
+            })
+        );
         this.initForm();
         if(this.mode == 'create'){
             this.editMode = true;
@@ -95,6 +111,17 @@ export class InventoryTransactionDetail {
             this.editMode = false;
             this.form.patchValue({
                 id: this.transaction.id ?? null,
+                itemId: this.transaction.itemId ?? null,
+                transactionType: this.transaction.transactionType ?? null,
+                quantity: this.transaction.quantity ?? null,
+                unitPrice: this.transaction.unitPrice ?? 0,
+                totalAmount: this.transaction.totalAmount ?? 0,
+                transactionDate: this.transaction.transactionDate
+                    ? new Date(this.transaction.transactionDate)
+                    : new Date(),
+                note: this.transaction.note ?? '',
+                relatedAnimalBatchId: this.transaction.relatedAnimalBatchId ?? null,
+                relatedPlantId: this.transaction.relatedPlantId ?? null
             })
         }
 
@@ -102,15 +129,15 @@ export class InventoryTransactionDetail {
 
     private initForm() {
         this.form = this.fb.group({
-            itemId: [this.transaction?.itemId ?? null, Validators.required],
-            transactionType: [this.transaction?.transactionType ?? 'IMPORT', Validators.required],
-            quantity: [this.transaction?.quantity ?? null, [Validators.required, Validators.min(1)]],
-            unitPrice: [this.transaction?.unitPrice ?? null, [Validators.min(0)]],
+            itemId: ['', Validators.required],
+            transactionType: ['', Validators.required],
+            quantity: ['', [Validators.required, Validators.min(1)]],
+            unitPrice: ['', [Validators.min(0)]],
             totalAmount: [{ value: this.transaction?.totalAmount ?? 0, disabled: true }],
-            transactionDate: [this.transaction?.transactionDate ? new Date(this.transaction.transactionDate) : new Date(), Validators.required],
-            note: [this.transaction?.note ?? null],
-            relatedAnimalBatchId: [this.transaction?.relatedAnimalBatchId ?? null],
-            relatedPlantId: [this.transaction?.relatedPlantId ?? null]
+            transactionDate: [new Date(), Validators.required],
+            note: [''],
+            relatedAnimalBatchId: [''],
+            relatedPlantId: ['']
         });
 
 
@@ -136,7 +163,6 @@ export class InventoryTransactionDetail {
             error: error => this.toast.error(error.message),
         })
 
-        this.transactionTypeOptions = ["IMPORT","CONSUME","ADJUST"]
 
 
     }

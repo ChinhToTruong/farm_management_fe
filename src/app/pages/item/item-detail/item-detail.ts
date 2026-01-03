@@ -18,6 +18,7 @@ export interface Item {
     id?: number;               // từ BaseEntity
     categoryId: number | null; // Nhóm vật tư
     category?: Category | null; // transient
+    categoryName?: string;
 
     name: string | null;       // Tên vật tư
     unit: string | null;       // Đơn vị tính
@@ -27,6 +28,7 @@ export interface Item {
     currentQuantity: number | null;  // Số lượng hiện có
 
     locationId: number | null;       // ID kho/khu vực
+    locationName?: string;
     location?: LocationType | null;      // transient
 }
 
@@ -79,6 +81,13 @@ export class ItemDetail implements OnInit {
             this.editMode = false;
             this.form.patchValue({
                 id: this.item.id ?? null,
+                categoryId: this.item.categoryId ?? null,
+                name: this.item.name ?? null,
+                unit: this.item.unit,
+                initialQuantity: this.item.initialQuantity ?? null,
+                reorderLevel: this.item.reorderLevel ?? null,
+                currentQuantity: this.item.currentQuantity ?? null,
+                locationId: this.item.locationId ?? null,
             })
         }
 
@@ -86,14 +95,14 @@ export class ItemDetail implements OnInit {
 
     private initForm() {
         this.form = this.fb.group({
-            id: [this.item?.id ?? null],
-            categoryId: [this.item?.categoryId ?? null, Validators.required],
-            name: [this.item?.name ?? '', Validators.required],
-            unit: [this.item?.unit ?? '', Validators.required],
-            initialQuantity: [this.item?.initialQuantity ?? 0, [Validators.required, Validators.min(0)]],
-            reorderLevel: [this.item?.reorderLevel ?? 0, [Validators.required, Validators.min(0)]],
-            currentQuantity: [this.item?.currentQuantity ?? 0, [Validators.required, Validators.min(0)]],
-            locationId: [this.item?.locationId ?? null, Validators.required]
+            id: [],
+            categoryId: [ ],
+            name: [],
+            unit: [],
+            initialQuantity: [],
+            reorderLevel: [],
+            currentQuantity: [],
+            locationId: [   ]
         });
 
 

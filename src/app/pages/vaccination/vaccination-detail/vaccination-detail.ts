@@ -23,8 +23,10 @@ export interface Vaccination {
 
     // REAL DB FIELDS
     batchId: number | null;
+    batchName: string;
     vaccinationName: string | null;
     userId: number | null;
+    userName: string;
     startDate: string | null;
     nextDate: string | null;
     note: string | null;

@@ -1,15 +1,9 @@
 import { Column } from '@/commons/type/app.table.type';
 
 export const itemColumns: Column[] = [
+
     {
-        field: 'id',
-        type: 'text',
-        operator: 'like',
-        header: 'ID',
-        sortable: true
-    },
-    {
-        field: 'categoryId',
+        field: 'categoryName',
         type: 'text',
         operator: 'like',
         header: 'Nhóm vật tư (ID)',
@@ -51,7 +45,7 @@ export const itemColumns: Column[] = [
         sortable: true
     },
     {
-        field: 'locationId',
+        field: 'locationName',
         type: 'text',
         operator: 'like',
         header: 'Kho/Khu vực (ID)',

@@ -1,22 +1,16 @@
 import { Column } from '@/commons/type/app.table.type';
 
 export const inventoryTransactionColumns: Column[] = [
+
     {
-        field: 'id',
-        type: 'text',
-        operator: 'like',
-        header: 'ID',
-        sortable: true
-    },
-    {
-        field: 'itemId',
+        field: 'itemName',
         type: 'text',
         operator: 'like',
         header: 'Vật tư (ID)',
         sortable: true
     },
     {
-        field: 'transactionType',
+        field: 'transactionTypeName',
         type: 'text',
         operator: 'like',
         header: 'Loại giao dịch',
@@ -58,14 +52,14 @@ export const inventoryTransactionColumns: Column[] = [
         sortable: false
     },
     {
-        field: 'relatedAnimalBatchId',
+        field: 'batchName',
         type: 'text',
         operator: 'like',
         header: 'Đàn vật nuôi (ID)',
         sortable: true
     },
     {
-        field: 'relatedPlantId',
+        field: 'plantName',
         type: 'text',
         operator: 'like',
         header: 'Cây trồng (ID)',

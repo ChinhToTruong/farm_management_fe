@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AppTable } from '@/layout/component/table/table';
 import { Dialog } from 'primeng/dialog';
 import { Column } from '@/commons/type/app.table.type';
@@ -9,11 +9,16 @@ import { LocationService } from '@/pages/service/location.service';
 import { SearchRequest } from '@/pages/service/base.service';
 import { BaseTableService } from '@/pages/service/base.table.service';
 import {
+    INVENTORY_TRANSACTION_TYPE_LABEL,
     InventoryTransaction,
     InventoryTransactionDetail
 } from '@/pages/inventory-trasaction/inventory-transaction-detail/inventory-transaction-detail';
 import { InventoryTransactionService } from '@/pages/service/inventory-transaction.service';
 import { inventoryTransactionColumns } from '@/pages/inventory-trasaction/common/constants';
+import { AnimalService } from '@/pages/service/animal.service';
+import { PlantService } from '@/pages/service/plant.service';
+import { ItemService } from '@/pages/service/item.service';
+import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
 
 @Component({
   selector: 'app-inventory-transaction-list',
@@ -25,7 +30,7 @@ import { inventoryTransactionColumns } from '@/pages/inventory-trasaction/common
   templateUrl: './inventory-transaction-list.html',
   styleUrl: './inventory-transaction-list.scss',
 })
-export class InventoryTransactionList extends BaseTableService<InventoryTransaction>{
+export class InventoryTransactionList extends BaseTableService<InventoryTransaction> implements OnInit {
     entities: InventoryTransaction[] = [];
     cols: any[] = []
     statuses: any[] = []
@@ -39,6 +44,13 @@ export class InventoryTransactionList extends BaseTableService<InventoryTransact
     visible: boolean = false;
     mode: 'create' | 'update' = 'create';
     selectedEntity!: InventoryTransaction;
+    animalService = inject(AnimalService);
+    plantService = inject(PlantService);
+    itemService = inject(ItemService);
+    batchMap = new Map<number, string>();
+    plantMap = new Map<number, string>();
+    itemMap = new Map<number, string>();
+    transactionMap = new Map<string, string>();
 
 
 
@@ -49,6 +61,35 @@ export class InventoryTransactionList extends BaseTableService<InventoryTransact
 
 
     ngOnInit() {
+
+        this.animalService.search(BASE_SEARCH_REQUEST).subscribe({
+            next: res => {
+                res.data.content.forEach(a => {
+                    if (a.id && a.batchName) {
+                        this.batchMap.set(a.id, a.batchName);
+                    }
+                });
+            }
+        });
+        this.plantService.search(BASE_SEARCH_REQUEST).subscribe({
+            next: res => {
+                res.data.content.forEach(p => {
+                    if (p.id && p.plantName) {
+                        this.plantMap.set(p.id, p.plantName);
+                    }
+                });
+            }
+        });
+
+        this.itemService.search(BASE_SEARCH_REQUEST).subscribe({
+            next: res => {
+                res.data.content.forEach(i => {
+                    if (i.id && i.name) {
+                        this.itemMap.set(i.id, i.name);
+                    }
+                });
+            }
+        });
         this.cols= inventoryTransactionColumns
         this.filter()
     }
@@ -89,6 +130,18 @@ export class InventoryTransactionList extends BaseTableService<InventoryTransact
                 this.entities = result.data.content.map(i => {
                     return {
                         ...i,
+                        transactionTypeName: INVENTORY_TRANSACTION_TYPE_LABEL[i.transactionType],
+                        batchName: i.relatedAnimalBatchId
+                            ? this.batchMap.get(i.relatedAnimalBatchId) ?? ''
+                            : '',
+
+                        plantName: i.relatedPlantId
+                            ? this.plantMap.get(i.relatedPlantId) ?? ''
+                            : '',
+
+                        itemName: i.itemId
+                            ? this.itemMap.get(i.itemId) ?? ''
+                            : '',
                     };
                 })
                 this.total = result.data.size
