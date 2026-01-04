@@ -98,7 +98,7 @@ export class Login {
                         localStorage.setItem('token', accessToken);
                         localStorage.setItem('refreshToken', refreshToken);
                         localStorage.setItem('user', JSON.stringify(user));
-                        this.notificationService.connect();
+                        this.notificationService.connect(accessToken);
                         this.router.navigate(['/']);
                     }
                 },

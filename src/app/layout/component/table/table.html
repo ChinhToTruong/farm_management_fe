@@ -13,6 +13,7 @@
 <p-table
     #dt
     [value]="data"
+    [scrollable]="true"
     [rows]="10"
     [columns]="columns"
     [paginator]="paginator"
@@ -26,7 +27,7 @@
     [totalRecords]="total"
     [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords}'"
     [showCurrentPageReport]="true"
-    class="my-table"
+    class="my-table hide-horizontal-scroll"
 >
     <ng-template #caption>
         <div class="flex items-center justify-between">

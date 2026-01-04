@@ -43,6 +43,10 @@ export const menuConfig : RoleMenuItem[] =  [
         label: 'Quản lý nhập/xuất kho', icon: 'pi pi-fw pi-users', routerLink: ['/inventory-transactions'], roles: ['FARMER', 'ADMIN']
     },
     {
+        label: 'Chat bot', icon: 'pi pi-fw pi-users', routerLink: ['/chat-bot'], roles: ['FARMER', 'ADMIN']
+    },
+
+    {
         label: 'Quản lý trang trại',
         icon: 'pi pi-fw pi-briefcase',
         roles: ['ADMIN', 'FARMER'],

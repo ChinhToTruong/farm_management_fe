@@ -20,6 +20,7 @@ import { ItemList } from '@/pages/item/item-list/item-list';
 import {
     InventoryTransactionList
 } from '@/pages/inventory-trasaction/inventory-transaction-list/inventory-transaction-list';
+import { ChatBot } from '@/pages/chat-bot/chat-bot';
 
 export const appRoutes: Routes = [
     {
@@ -139,6 +140,16 @@ export const appRoutes: Routes = [
             {
                 path: '',
                 component: InventoryTransactionList
+            }
+        ]
+    },
+    {
+        path: 'chat-bot',
+        component: AppLayout,
+        children: [
+            {
+                path: '',
+                component: ChatBot
             }
         ]
     },

@@ -1,27 +1,40 @@
 .my-table {
     width: 100%;
     border-collapse: collapse;
-    overflow-x: auto;
-    display: block;
+    display: block;        // bắt buộc để scroll
+    overflow-x: auto;      // scroll ngang
+    overflow-y: auto;      // scroll dọc bình thường
 
-    th,
-    td {
-        border: 1px #ccc;
-        padding: 0.5rem;
-        white-space: nowrap;
-    }
+    /* Ẩn thanh scroll ngang nhưng vẫn scroll được */
+    scrollbar-width: thin;      // Firefox, vẫn scroll
+    scrollbar-color: transparent transparent; // màu scrollbar trong suốt
 
-    .sticky-left {
-        position: sticky;
-        left: 0;
-        background: #fff;
-        z-index: 2; // ưu tiên hiển thị trên các cột khác
-    }
+    -ms-overflow-style: -ms-autohiding-scrollbar; // IE 10+
+}
 
-    .sticky-right {
-        position: sticky;
-        right: 0;
-        background: #fff;
-        z-index: 2;
-    }
+.my-table::-webkit-scrollbar {
+    height: 0;             // ẩn scrollbar ngang Chrome/Safari
+    width: 8px;            // giữ scrollbar dọc
+}
+
+
+.my-table th,
+.my-table td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    white-space: nowrap;
+}
+
+.my-table .sticky-left {
+    position: sticky;
+    left: 0;
+    background: #fff;
+    z-index: 2; // ưu tiên hiển thị trên các cột khác
+}
+
+.my-table .sticky-right {
+    position: sticky;
+    right: 0;
+    background: #fff;
+    z-index: 2;
 }

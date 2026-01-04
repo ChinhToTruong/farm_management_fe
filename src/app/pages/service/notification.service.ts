@@ -1,5 +1,5 @@
-import { inject, Injectable } from '@angular/core';
-import { Client } from '@stomp/stompjs';
+import { inject, Injectable, NgZone } from '@angular/core';
+import { Client, IMessage } from '@stomp/stompjs';
 import { BehaviorSubject } from 'rxjs';
 import SockJS from 'sockjs-client';
 import { ToastService } from '@/pages/service/toast.service';
@@ -10,46 +10,43 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 @Injectable({providedIn: 'root'})
 export class NotificationService {
 
+    toastService = inject(ToastService);
+    private client!: Client;
+    private zone= inject(NgZone)
 
-    private socket$!: WebSocketSubject<any>;
+    connect(token: string) {
+        this.client = new Client({
+            brokerURL: 'ws://localhost:8080/ws',
+            connectHeaders: {
+                Authorization: `Bearer ${token}`
+            },
+            debug: (str) => console.log(str),
+            reconnectDelay: 5000
+        });
 
-    connect() {
-        const token = localStorage.getItem('token');
-        console.log(token);
-        debugger
-        if (!this.socket$ || this.socket$.closed) {
-            this.socket$ = webSocket({
-                url: `ws://localhost:8080/ws?token=${token}`,
-                deserializer: e => JSON.parse(e.data),
-                openObserver: {
-                    next: () => {
-                        console.log('✅ WebSocket CONNECTED');
-                        // 👉 ở đây bạn có thể:
-                        // - set flag connected = true
-                        // - gửi message AUTH
-                        // - hiện toast "Đã kết nối realtime"
-                    }
-                },
+        this.client.onConnect = () => {
+            console.log('✅ STOMP CONNECTED');
 
-                closeObserver: {
-                    next: () => {
-                        console.log('❌ WebSocket DISCONNECTED');
-                    }
-                }
-            })
-        }
+            this.client.subscribe('/user/queue/notifications', message => {
+                this.zone.run(() => {
+                    console.log('📩 WS MESSAGE:', message.body);
+                    this.toastService.info(message.body);
+                });
+            });
+
+            console.log('✅ SUBSCRIBED /user/queue/notifications');
+        };
+
+
+        this.client.onStompError = frame => {
+            console.error('❌ STOMP ERROR', frame);
+        };
+
+        this.client.activate();
     }
 
-    listen() {
-        return this.socket$;
-    }
-
-    send(message: any) {
-        this.socket$.next(message);
-    }
-
-    close() {
-        this.socket$.complete();
+    disconnect() {
+        this.client?.deactivate();
     }
 
 
