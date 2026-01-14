@@ -1,88 +1,61 @@
-<div class="flex min-h-screen items-start justify-center bg-gray-100">
-
-    <div class="w-full max-w-md h-[90vh] bg-white rounded-xl shadow-lg flex flex-col">
-
-        <!-- Header -->
-        <div class="flex items-center gap-3 px-4 py-3 border-b">
-            <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                AI
-            </div>
-            <div>
-                <div class="font-semibold">AI Assistant</div>
-                <div class="text-xs text-green-500">Online</div>
-            </div>
-        </div>
-
-        <!-- Messages -->
-        <div #scroll class="flex-1 overflow-y-auto px-4 py-3 space-y-3">
-
-            <div *ngFor="let msg of messages"
-                 class="flex"
-                 [ngClass]="msg.role === 'user' ? 'justify-end' : 'justify-start'">
-
-                <div
-                    class="
-            max-w-[75%]
-            rounded-xl
-            px-4
-            py-2
-            text-sm
-            whitespace-pre-wrap
-            break-words
-            break-all
-        "
-                    [ngClass]="msg.role === 'user'
-            ? 'bg-blue-500 text-white rounded-br-none'
-            : 'bg-gray-200 text-gray-800 rounded-bl-none'">
-
-                    <!-- AI -->
-                    <div
-                        *ngIf="msg.role === 'assistant'"
-                        class="leading-relaxed"
-                        [innerHTML]="formatToHtml(msg.content)">
+<div class="content">
+    <ng-container>
+        <div class="flex h-[calc(100vh-112px)] items-start justify-center">
+            <div class="w-full h-full rounded-xl shadow-lg flex flex-col">
+                <!-- Header -->
+                <div class="flex items-center justify-between gap-3 px-4 py-3 border-b">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full mess flex items-center justify-center font-bold">AI</div>
+                        <div>
+                            <div class="font-semibold">AI Assistant</div>
+                            <div class="flex items-center gap-1 text-xs text-green-500">
+                                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                Online
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- USER -->
-                    <div *ngIf="msg.role === 'user'">
-                        {{ msg.content }}
-                    </div>
-
-                    <div class="text-[10px] mt-1 opacity-70 text-right">
-                        {{ msg.time }}
+                    <div>
+                        <p-selectButton [options]="options" [(ngModel)]="selected" optionValue="value" optionLabel="label"> </p-selectButton>
                     </div>
                 </div>
-            </div>
 
-            <!-- typing -->
-            @if (streaming) {
-                <div class="flex justify-start">
-                    <div class="bg-gray-200 rounded-xl px-4 py-2 flex gap-1">
-                        <span class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></span>
-                        <span class="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-150"></span>
-                        <span class="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-300"></span>
+                <!-- Messages -->
+                <div #scroll class="flex-1 overflow-y-auto px-4 py-3 space-y-3">
+                    <div *ngFor="let msg of messages" class="flex" [ngClass]="msg.role === 'user' ? 'justify-end' : 'justify-start'">
+                        <div
+                            class="max-w-[75%] rounded-xl px-4 py-2 text-sm whitespace-pre-wrap break-words break-all"
+                            [ngClass]="msg.role === 'user'
+            ? 'mess'
+            : 'bg-gray-200 text-gray-800 rounded-bl-none'"
+                        >
+                            <!-- AI -->
+                            <div *ngIf="msg.role === 'assistant'" class="leading-relaxed" [innerHTML]="formatToHtml(msg.content)"></div>
+
+                            <!-- USER -->
+                            <div *ngIf="msg.role === 'user'">{{ msg.content }}</div>
+
+                            <div class="text-[10px] mt-1 opacity-70 text-right">{{ msg.time }}</div>
+                        </div>
                     </div>
+
+                    <!-- typing -->
+                    @if (streaming) {
+                    <div class="flex justify-start">
+                        <div class="bg-gray-200 rounded-xl px-4 py-2 flex gap-1">
+                            <span class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></span>
+                            <span class="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-150"></span>
+                            <span class="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-300"></span>
+                        </div>
+                    </div>
+                    }
                 </div>
-            }
 
+                <!-- Input -->
+                <div class="border-t p-3 flex gap-2">
+                    <input pInputText [(ngModel)]="input" (keydown.enter)="send()" placeholder="Nhập tin nhắn..." class="w-full pl-3" />
+                    <button pButton icon="pi pi-send" class="p-button-rounded" [disabled]="streaming" (click)="send()"></button>
+                </div>
+            </div>
         </div>
-
-        <!-- Input -->
-        <div class="border-t p-3 flex gap-2">
-            <input
-                pInputText
-                [(ngModel)]="input"
-                (keydown.enter)="send()"
-                placeholder="Nhập tin nhắn..."
-                class="w-full" />
-
-            <button
-                pButton
-                icon="pi pi-send"
-                class="p-button-rounded"
-                [disabled]="streaming"
-                (click)="send()">
-            </button>
-        </div>
-
-    </div>
+    </ng-container>
 </div>
