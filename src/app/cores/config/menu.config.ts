@@ -16,34 +16,34 @@ export const menuConfig : RoleMenuItem[] =  [
         label: 'Quản lý người dùng', icon: 'pi pi-fw pi-users', routerLink: ['/users'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý khu vực', icon: 'pi pi-fw pi-users', routerLink: ['/locations'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý khu vực', icon: 'pi pi-fw pi-map', routerLink: ['/locations'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý vụ mùa', icon: 'pi pi-fw pi-users', routerLink: ['/crop-seasons'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý vụ mùa', icon: 'pi pi-fw pi-calendar', routerLink: ['/crop-seasons'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý cây trồng', icon: 'pi pi-fw pi-users', routerLink: ['/plants'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý cây trồng', icon: 'tw-icon tw-plant', routerLink: ['/plants'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý cây vật nuôi', icon: 'pi pi-fw pi-users', routerLink: ['/animals'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý cây vật nuôi', icon: 'tw-icon tw-animal', routerLink: ['/animals'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý công việc hằng ngày', icon: 'pi pi-fw pi-users', routerLink: ['/work-diaries'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý công việc hằng ngày', icon: 'pi pi-fw pi-clipboard', routerLink: ['/work-diaries'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý tiêm phòng', icon: 'pi pi-fw pi-users', routerLink: ['/vaccination'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý tiêm phòng', icon: 'pi pi-fw pi-heart', routerLink: ['/vaccination'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý kho', icon: 'pi pi-fw pi-users', routerLink: ['/categories'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý kho', icon: 'pi pi-fw pi-warehouse', routerLink: ['/categories'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý vật liệu', icon: 'pi pi-fw pi-users', routerLink: ['/items'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý vật liệu', icon: 'pi pi-fw pi-box', routerLink: ['/items'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Quản lý nhập/xuất kho', icon: 'pi pi-fw pi-users', routerLink: ['/inventory-transactions'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý nhập/xuất kho', icon: 'pi pi-fw pi-arrow-right-arrow-left', routerLink: ['/inventory-transactions'], roles: ['FARMER', 'ADMIN']
     },
     {
-        label: 'Chat bot', icon: 'pi pi-fw pi-users', routerLink: ['/chat-bot'], roles: ['FARMER', 'ADMIN']
+        label: 'Chat bot', icon: 'pi pi-fw pi-comments', routerLink: ['/chat-bot'], roles: ['FARMER', 'ADMIN']
     },
 
     {

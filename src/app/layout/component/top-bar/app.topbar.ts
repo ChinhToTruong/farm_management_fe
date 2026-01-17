@@ -9,21 +9,32 @@ import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { AuthService } from '@/pages/service/auth.service';
+import { AppNotification } from '../notification/app.notification';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, TieredMenu],
+    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, TieredMenu, AppNotification],
     templateUrl: 'app.topbar.html',
+    styleUrls: ["./app.topbar.css"],
 })
 export class AppTopbar implements OnInit {
     items!: MenuItem[];
     profileItems: MenuItem[] | undefined;
     router = inject(Router);
     authService = inject(AuthService);
-
     constructor(public layoutService: LayoutService) {}
+    notificationOpen = false;
+    hasUnread = true; // lấy từ API / store
 
+    toggleNotification() {
+        this.notificationOpen = !this.notificationOpen;
+
+        // Khi mở dropdown → có thể clear badge
+        if (this.notificationOpen) {
+            // this.hasUnread = false;
+        }
+    }
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
     }
@@ -57,6 +68,5 @@ export class AppTopbar implements OnInit {
                 console.error(error);
             }
         });
-
     }
 }

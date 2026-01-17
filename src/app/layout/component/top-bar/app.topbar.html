@@ -31,15 +31,7 @@
                 <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
             </button>
             <div class="relative">
-                <button
-                    class="layout-topbar-action layout-topbar-action-highlight"
-                    pStyleClass="@next"
-                    enterFromClass="hidden"
-                    enterActiveClass="animate-scalein"
-                    leaveToClass="hidden"
-                    leaveActiveClass="animate-fadeout"
-                    [hideOnOutsideClick]="true"
-                >
+                <button class="layout-topbar-action layout-topbar-action-highlight" pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
                     <i class="pi pi-palette"></i>
                 </button>
                 <app-configurator />
@@ -52,24 +44,52 @@
 
         <div class="layout-topbar-menu hidden lg:block">
             <div class="layout-topbar-menu-content">
-<!--                <button type="button" class="layout-topbar-action">-->
-<!--                    <i class="pi pi-calendar"></i>-->
-<!--                    <span>Calendar</span>-->
-<!--                </button>-->
-                <button type="button" class="layout-topbar-action">
-                    <i class="pi pi-inbox"></i>
-                    <span>Messages</span>
-                </button>
+                <!--                <button type="button" class="layout-topbar-action">-->
+                <!--                    <i class="pi pi-calendar"></i>-->
+                <!--                    <span>Calendar</span>-->
+                <!--                </button>-->
+
+                <!-- <div class="relative">
+                    <button
+                        class="layout-topbar-menu-button layout-topbar-action layout-topbar-action-highlight"
+                        pStyleClass="@next"
+                        enterFromClass="hidden"
+                        enterActiveClass="animate-scalein"
+                        leaveToClass="hidden"
+                        leaveActiveClass="animate-fadeout"
+                        [hideOnOutsideClick]="true"
+                    >
+                        <i class="pi pi-inbox"></i>
+                        <span>Messages</span>
+                    </button>
+                    <app-notification />
+                </div> -->
+                <div class="relative">
+                    <button
+                        type="button"
+                        class="layout-topbar-action"
+                        [ngClass]="{'notification-active': notificationOpen}"
+                        (click)="toggleNotification()"
+                        pStyleClass="@next"
+                        enterFromClass="hidden"
+                        enterActiveClass="animate-scalein"
+                        leaveToClass="hidden"
+                        leaveActiveClass="animate-fadeout"
+                        [hideOnOutsideClick]="true"
+                    >
+                        <i class="pi pi-inbox"></i>
+                        <div *ngIf="hasUnread" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-surface-0 dark:border-surface-900"></div>
+                        <span>Messages</span>
+                        <!-- thông báo mới -->
+                    </button>
+                    <app-notification [open]="notificationOpen" (close)="notificationOpen = false" />
+                </div>
                 <!-- Dropdown menu -->
                 <p-tieredMenu #profileMenu [model]="profileItems" [popup]="true"></p-tieredMenu>
-                <button type="button"
-                        class="layout-topbar-action"
-                        (click)="profileMenu.toggle($event)"
-                >
+                <button type="button" class="layout-topbar-action" (click)="profileMenu.toggle($event)">
                     <i class="pi pi-user"></i>
                     <span>Profile</span>
                 </button>
-
             </div>
         </div>
     </div>

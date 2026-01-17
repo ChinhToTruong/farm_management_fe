@@ -1,0 +1,21 @@
+.notification-active{
+    border: 2px solid var(--primary-color) !important;
+        color: var(--primary-color);
+}
+.unread-dot {
+  position: absolute;
+
+  top: 0.25rem;    /* top-1 */
+  right: 0.25rem;  /* right-1 */
+
+  width: 0.625rem;  /* w-2.5 (10px) */
+  height: 0.625rem; /* h-2.5 (10px) */
+
+  background-color: var(--primary-color);
+
+  border-radius: 9999px; /* rounded-full */
+  border-width: 2px;
+  border-style: solid;
+  border-color:var(--surface-border); /* border-surface-0 */
+}
+
