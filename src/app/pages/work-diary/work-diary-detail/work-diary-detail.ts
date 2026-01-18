@@ -176,10 +176,10 @@ export class WorkDiaryDetail implements OnInit {
             description: [''],
 
             // --- Transient objects (không submit lên server) ---
-            user: [''],
-            cropSeason: [''],
-            batch: [''],
-            plant: ['']
+            user: [],
+            cropSeason: [],
+            batch: [],
+            plant: []
         });
 
         this.statusOptions = [
