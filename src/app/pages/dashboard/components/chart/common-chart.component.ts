@@ -1,19 +1,26 @@
-import { Component, Input, OnInit, OnDestroy, NgModule } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
+import { CommonModule } from '@angular/common';
 import { debounceTime, Subscription } from 'rxjs';
 import { LayoutService } from '../../../../layout/service/layout.service';
-import { CommonModule } from '@angular/common';
+export interface CommonChartInput {
+    labels: string[];
+    series: CommonChartSeries[];
+}
 
+export interface CommonChartSeries {
+    name: string;
+    data: number[];
+    color?: string;
+    tension?: number;
+}
 @Component({
     standalone: true,
     selector: 'app-common-chart',
     imports: [ChartModule, CommonModule],
     template: `
         <div class="card">
-            <div *ngIf="title" class="font-semibold text-xl mb-4">
-                {{ title }}
-            </div>
-
+            <div *ngIf="title" class="font-semibold text-xl mb-4">{{ title }}</div>
             <p-chart [type]="type" [data]="chartData" [options]="chartOptions" class="h-100" />
         </div>
     `
@@ -21,12 +28,11 @@ import { CommonModule } from '@angular/common';
 export class CommonChartComponent implements OnInit, OnDestroy {
     @Input() title = '';
     @Input() type: 'bar' | 'line' | 'pie' = 'bar';
-    @Input() data!: any;
-    @Input() options?: any;
-
+    @Input() input!: CommonChartInput;
+    @Input() xLabel = '';
+    @Input() yLabel = '';
     chartData: any;
     chartOptions: any;
-
     subscription!: Subscription;
 
     constructor(private layoutService: LayoutService) {
@@ -37,26 +43,13 @@ export class CommonChartComponent implements OnInit, OnDestroy {
         this.initChart();
     }
 
-    generateThemeColors(count: number): string[] {
-        const colors = ['--p-primary-500', '--p-green-500', '--p-orange-500', '--p-cyan-500', '--p-pink-500', '--p-indigo-500'];
-
+    private initChart() {
         const style = getComputedStyle(document.documentElement);
+        const textColor = style.getPropertyValue('--text-color');
+        const borderColor = style.getPropertyValue('--surface-border');
+        const textMutedColor = style.getPropertyValue('--text-color-secondary');
 
-        return Array.from({ length: count }, (_, i) => style.getPropertyValue(colors[i % colors.length]));
-    }
-    initChart() {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const borderColor = documentStyle.getPropertyValue('--surface-border');
-        const textMutedColor = documentStyle.getPropertyValue('--text-color-secondary');
-
-        this.chartData = {
-            ...this.data,
-            datasets: this.data.datasets.map((dataset: any) => ({
-                ...dataset,
-                backgroundColor: dataset.backgroundColor ?? this.generateThemeColors(this.data.labels.length)
-            }))
-        };
+        this.chartData = this.type === 'pie' ? this.buildPieData() : this.buildBarLineData();
 
         this.chartOptions = {
             maintainAspectRatio: false,
@@ -70,15 +63,45 @@ export class CommonChartComponent implements OnInit, OnDestroy {
                     ? {}
                     : {
                           x: {
+                              title: {
+                                  display: !!this.xLabel,
+                                  text: this.xLabel
+                              },
                               ticks: { color: textMutedColor },
                               grid: { color: 'transparent' }
                           },
                           y: {
+                              title: {
+                                  display: !!this.yLabel,
+                                  text: this.yLabel
+                              },
                               ticks: { color: textMutedColor },
                               grid: { color: borderColor }
                           }
-                      },
-            ...this.options
+                      }
+        };
+    }
+
+    private buildBarLineData() {
+        return {
+            labels: this.input.labels,
+            datasets: this.input.series.map((s: any) => ({
+                label: s.name,
+                data: s.data,
+                fill: this.type === 'line' ? false : true,
+                tension: this.type === 'line' ? 0.4 : 0
+            }))
+        };
+    }
+
+    private buildPieData() {
+        return {
+            labels: this.input.labels,
+            datasets: [
+                {
+                    data: this.input.series[0]?.data ?? []
+                }
+            ]
         };
     }
 

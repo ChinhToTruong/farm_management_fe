@@ -1,0 +1,12 @@
+.title-header {
+    /* color: var(--text-color); */
+    background-color: var(--surface-card);
+    border-radius: var(--content-border-radius);
+
+    /* background-color: var(--primary-color); */
+    /* color: var(--primary-contrast-color); */
+}
+.page-container {
+  height: calc(100vh - 195px);
+  overflow: hidden;
+}

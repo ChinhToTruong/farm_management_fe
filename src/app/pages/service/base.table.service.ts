@@ -13,9 +13,6 @@ export abstract class BaseTableService<T> {
     protected constructor(protected service: BaseService<T>) {
     }
 
-
-
-
     onDelete(item: any) {
 
         this.service.delete(item.id).subscribe({

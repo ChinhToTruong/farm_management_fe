@@ -42,10 +42,12 @@ export abstract class BaseService<T>{
     }
 
 
-    getById(id: number): Observable<ResponseData<T>> {
+    getById(id?: number): Observable<ResponseData<T>> {
         return this.http.get<ResponseData<T>>(`${this.baseUrl}/${id}`);
     }
-
+    getData(): Observable<ResponseData<T>> {
+        return this.http.get<ResponseData<T>>(`${this.baseUrl}`);
+    }
     create(data: T): Observable<ResponseData<T>> {
         return this.http.post<ResponseData<T>>(this.baseUrl, data);
     }
