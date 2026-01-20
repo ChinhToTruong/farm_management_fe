@@ -64,7 +64,8 @@
                     </button>
                     <app-notification />
                 </div> -->
-                <div class="relative">
+
+                <div class="relative" #notificationWrapper>
                     <button
                         type="button"
                         class="layout-topbar-action"
@@ -82,7 +83,7 @@
                         <span>Messages</span>
                         <!-- thông báo mới -->
                     </button>
-                    <app-notification [open]="notificationOpen" (close)="notificationOpen = false" />
+                    <app-notification [open]="notificationOpen" />
                 </div>
                 <!-- Dropdown menu -->
                 <p-tieredMenu #profileMenu [model]="profileItems" [popup]="true"></p-tieredMenu>
