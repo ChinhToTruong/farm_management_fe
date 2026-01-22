@@ -1,3 +1,4 @@
+import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -34,14 +35,33 @@ export interface SearchRequest {
     sorts: SortRequest[];
 }
 
-export abstract class BaseService<T>{
+export abstract class BaseService<T> {
     protected baseUrl: string;
-
-    protected constructor(protected http: HttpClient, url: string) {
+    role: FilterRequest = {
+        field: 'userId',
+        value: '',
+        operator: 'equals'
+    };
+    isAdmin: boolean = false;
+    protected constructor(
+        protected http: HttpClient,
+        url: string
+    ) {
         this.baseUrl = `http://localhost:8080/${url}`;
     }
+    checkRole() {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const authorities = user.role.roleName;
+        console.log('authorities', authorities);
 
-
+        //    const check = authorities.find((i:any)=> i.authoritiy ==='FARMER' || i.authoritiy ==="ENGINEER");
+        if (authorities) {
+            this.role.value = user.id;
+            this.isAdmin = false;
+        } else {
+            this.isAdmin = true;
+        }
+    }
     getById(id?: number): Observable<ResponseData<T>> {
         return this.http.get<ResponseData<T>>(`${this.baseUrl}/${id}`);
     }
@@ -64,7 +84,11 @@ export abstract class BaseService<T>{
         return this.http.post<ResponseData<string>>(`${this.baseUrl}/delete-list`, ids);
     }
 
-    search(params: SearchRequest): Observable<ResponseData<ListResponse<T>>> {
+    search(params: SearchRequest, isRole: boolean = false): Observable<ResponseData<ListResponse<T>>> {
+        this.checkRole();
+        if (!this.isAdmin && isRole) {
+            params.filters.push(this.role);
+        }
         return this.http.post<ResponseData<ListResponse<T>>>(`${this.baseUrl}/search`, params);
     }
 }

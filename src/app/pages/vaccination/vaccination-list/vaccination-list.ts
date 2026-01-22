@@ -115,7 +115,7 @@ export class VaccinationList extends BaseTableService<Vaccination> implements On
             ]
         }
 
-        this.service.search(par).subscribe({
+        this.service.search(par,true).subscribe({
             next: (result) => {
                 console.log(result.data.content);
                 this.entities = result.data.content.map(i => {
