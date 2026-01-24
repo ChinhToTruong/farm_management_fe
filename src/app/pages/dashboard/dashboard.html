@@ -1,68 +1,33 @@
-<div class="flex items-center justify-between mb-8 p-4 h-15 title-header">
-    <div class="flex items-center">
-        <span class="text-3xl font-semibold">Biểu đồ thống kê</span>
-    </div>
-
-    <select class="border rounded px-3 py-1 text-sm title-header" [(ngModel)]="selectedChart">
-        <option value="bar">Biểu đồ cột</option>
-        <option value="line">Biểu đồ đường</option>
-        <option value="pie">Biểu đồ tròn</option>
-    </select>
-</div>
-<div class="overflow-auto page-container" style="overflow-y: auto; padding-left: 32px; margin-left: -32px">
-    <div class="grid grid-cols-12 gap-8">
-        <!-- <div class="col-span-12">
-        <div class="flex items-center justify-between p-4 h-15 title-header">
+<div>
+    <ng-container>
+        <div class="title-header mb-8 p-4">
             <div class="flex items-center">
-                <span class="text-3xl font-semibold">Biểu đồ</span>
+                <div class="flex items-center">
+                    <span class="text-3xl font-semibold">Biểu đồ thống kê</span>
+                </div>
             </div>
-
-            <select class="border rounded px-3 py-1 text-sm title-header" [(ngModel)]="selectedChart">
-                <option value="bar">Biểu đồ cột</option>
-                <option value="line">Biểu đồ đường</option>
-                <option value="pie">Biểu đồ tròn</option>
-            </select>
         </div>
-    </div> -->
-        <div class="col-span-6">
-            <!-- Chart -->
-            <ng-container [ngSwitch]="selectedChart">
-                <app-common-chart *ngSwitchCase="'bar'" title="Thống kê công việc" type="bar" xLabel="Ngày thực hiện" yLabel="Số công việc" unit="công việc" [input]="dataBarLine"> </app-common-chart>
 
-                <app-common-chart *ngSwitchCase="'line'" title="Thống kê công việc" type="line" [input]="dataBarLine"> </app-common-chart>
+        <div class="overflow-auto page-container" style="overflow-y: auto; padding-left: 32px; margin-left: -32px">
+            <div class="grid grid-cols-12 gap-8">
+                <div class="col-span-6">
+                    <!-- Chart -->
 
-                <app-common-chart *ngSwitchCase="'pie'" title="Thống kê công việc" type="pie" [input]="dataPie"> </app-common-chart>
-            </ng-container>
+                    <app-common-chart title="Thống kê công việc" xLabel="Ngày thực hiện" yLabel="Số công việc" unit="công việc" [input]="dataBarLine"> </app-common-chart>
+                </div>
+                <div class="col-span-6">
+                    <!-- Chart -->
+                    <app-common-chart title="Thống kê tiêm phòng" xLabel="Ngày thực hiện" yLabel="Số vật nuôi" unit="vật nuôi" [input]="pieDataMock"> </app-common-chart>
+                </div>
+                <div class="col-span-6">
+                    <!-- Chart -->
+                    <app-common-chart title="Thống kê công việc" xLabel="Ngày thực hiện" yLabel="Số công việc" unit="công việc" [input]="pieData"> </app-common-chart>
+                </div>
+                <div class="col-span-6">
+                    <!-- Chart -->
+                    <app-common-chart title="Thống kê công việc" xLabel="Ngày thực hiện" yLabel="Số công việc" unit="công việc" [input]="pieData"> </app-common-chart>
+                </div>
+            </div>
         </div>
-        <div class="col-span-6">
-            <!-- Chart -->
-            <ng-container [ngSwitch]="selectedChart">
-                <app-common-chart *ngSwitchCase="'bar'" title="Thống kê công việc" type="bar" xLabel="Ngày thực hiện" yLabel="Số công việc" unit="công việc" [input]="pieData"> </app-common-chart>
-
-                <app-common-chart *ngSwitchCase="'line'" title="Thống kê công việc" type="line" [input]="pieData"> </app-common-chart>
-
-                <app-common-chart *ngSwitchCase="'pie'" title="Thống kê công việc" type="pie" [input]="pieData"> </app-common-chart>
-            </ng-container>
-        </div>
-        <div class="col-span-6">
-            <!-- Chart -->
-            <ng-container [ngSwitch]="selectedChart">
-                <app-common-chart *ngSwitchCase="'bar'" title="Thống kê công việc" type="bar" xLabel="Ngày thực hiện" yLabel="Số công việc" unit="công việc" [input]="pieData"> </app-common-chart>
-
-                <app-common-chart *ngSwitchCase="'line'" title="Thống kê công việc" type="line" [input]="pieData"> </app-common-chart>
-
-                <app-common-chart *ngSwitchCase="'pie'" title="Thống kê công việc" type="pie" [input]="pieData"> </app-common-chart>
-            </ng-container>
-        </div>
-        <div class="col-span-6">
-            <!-- Chart -->
-            <ng-container [ngSwitch]="selectedChart">
-                <app-common-chart *ngSwitchCase="'bar'" title="Thống kê công việc" type="bar" xLabel="Ngày thực hiện" yLabel="Số công việc" unit="công việc" [input]="pieData"> </app-common-chart>
-
-                <app-common-chart *ngSwitchCase="'line'" title="Thống kê công việc" type="line" [input]="pieData"> </app-common-chart>
-
-                <app-common-chart *ngSwitchCase="'pie'" title="Thống kê công việc" type="pie" [input]="pieData"> </app-common-chart>
-            </ng-container>
-        </div>
-    </div>
+    </ng-container>
 </div>

@@ -7,6 +7,12 @@
     /* color: var(--primary-contrast-color); */
 }
 .page-container {
-  height: calc(100vh - 195px);
+  height: calc(100vh - 200px);
   overflow: hidden;
+}
+input[type="date"] {
+  pointer-events: auto !important;
+}
+.container{
+      background-color: var(--surface-card);
 }

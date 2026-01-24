@@ -1,0 +1,43 @@
+<div class="card p-4">
+    <!-- FILTER -->
+    <div class="grid grid-cols-12 gap-6 mb-6">
+        <!-- Loại biểu đồ -->
+        <div class="col-span-4">
+            <label class="block mb-1.5 text-base font-semibold"> Loại biểu đồ </label>
+
+            <p-select class="w-full" [options]="chartTypeOptions" [(ngModel)]="selectedChartType" optionLabel="label" optionValue="value" placeholder="Chọn loại biểu đồ" (ngModelChange)="onChartTypeChange($event)"> </p-select>
+        </div>
+
+        <!-- Kỳ thống kê -->
+        <div class="col-span-4">
+            <label class="block mb-1.5 text-base font-semibold"> Kỳ thống kê </label>
+
+            <p-select class="w-full" [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value" placeholder="Chọn kỳ" (ngModelChange)="onPeriodChange($event)"> </p-select>
+        </div>
+
+        <!-- Giá trị kỳ (năm / quý / tháng) -->
+        <div class="col-span-4" *ngIf="selectedPeriod !== 'day'">
+            <label class="block mb-1.5 text-base font-semibold">
+                {{ periodLabel }}
+            </label>
+
+            <p-select class="w-full" [options]="periodValueOptions" [(ngModel)]="selectedValue" optionLabel="label" optionValue="value" placeholder="Chọn giá trị" (ngModelChange)="onValueChange($event)"> </p-select>
+        </div>
+
+        <!-- Ngày -->
+        <div class="col-span-4" *ngIf="selectedPeriod === 'day'">
+            <label class="block mb-1.5 text-base font-semibold"> Chọn ngày </label>
+
+            <p-date-picker class="w-full" [(ngModel)]="selectedDate" dateFormat="yy-mm-dd" showIcon="true" placeholder="Chọn ngày" (onSelect)="onDateChange($event)" [inputStyle]="{ width: '100%', height: '30.8px' }" styleClass="w-full">
+            </p-date-picker>
+        </div>
+    </div>
+    <!-- TITLE -->
+    <div *ngIf="title" class="font-semibold text-xl mb-4">
+        {{ title }}
+    </div>
+    <!-- CHART -->
+    <div class="h-[420px]">
+        <p-chart [type]="selectedChartType" [data]="chartData" [options]="chartOptions" class="h-full"> </p-chart>
+    </div>
+</div>
