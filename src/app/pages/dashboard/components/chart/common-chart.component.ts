@@ -7,6 +7,7 @@ import { DatePicker } from 'primeng/datepicker';
 import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 export interface CommonChartInput {
     labels: string[];
     series: CommonChartSeries[];
@@ -45,6 +46,7 @@ export class CommonChartComponent implements OnDestroy, OnChanges {
     chartData: any;
     chartOptions: any;
     subscription!: Subscription;
+    dataAll!: CommonChartInput;
     // loại biểu đồ
     chartTypeOptions = [
         { label: 'Biểu đồ cột', value: 'bar' },
@@ -108,9 +110,16 @@ export class CommonChartComponent implements OnDestroy, OnChanges {
         }
         if (period === 'day') {
             this.selectedDate = this.formatDate(new Date());
-            console.log('day',this.selectedDate);
-            
+            console.log('day', this.selectedDate);
         }
+                const filtered = this.filterStatistics({
+            chartType: this.type,
+            period: this.selectedPeriod,
+            value: this.selectedValue ?? undefined,
+            date: this.selectedDate
+        });
+        this.input = filtered;
+        this.initChart();
         this.emitFilter();
     }
     formatDate(date: Date): string {
@@ -136,15 +145,41 @@ export class CommonChartComponent implements OnDestroy, OnChanges {
 
     onValueChange(value: number) {
         this.selectedValue = value;
+        const filtered = this.filterStatistics({
+            chartType: this.type,
+            period: this.selectedPeriod,
+            value: this.selectedValue ?? undefined,
+            date: this.selectedDate
+        });
+        this.input = filtered;
+        console.log('this.input', this.input);
+        console.log('filtered', filtered);
+        this.initChart();
         this.emitFilter();
     }
 
     onDateChange(date: Date) {
         this.selectedDate = this.formatDate(date);
+        const filtered = this.filterStatistics({
+            chartType: this.type,
+            period: this.selectedPeriod,
+            value: this.selectedValue ?? undefined,
+            date: this.selectedDate
+        });
+        this.input = filtered;
+        this.initChart();
         this.emitFilter();
     }
     ngOnChanges(changes: SimpleChanges) {
         if (changes['input'] && this.input?.series?.length) {
+            this.dataAll = this.input;
+            const filtered = this.filterStatistics({
+                chartType: this.type,
+                period: this.selectedPeriod,
+                value: this.selectedValue ?? undefined,
+                date: this.selectedDate
+            });
+            this.input = filtered;
             this.initChart();
         }
     }
@@ -228,5 +263,49 @@ export class CommonChartComponent implements OnDestroy, OnChanges {
 
     ngOnDestroy() {
         this.subscription?.unsubscribe();
+    }
+    parseVNDate(dateStr: string): Date {
+        const [day, month, year] = dateStr.split('/').map(Number);
+        return new Date(year, month - 1, day);
+    }
+    filterStatistics(filter: ChartFilter): CommonChartInput {
+        if (!this.dataAll) {
+            return { labels: [], series: [] };
+        }
+        console.log('filter', filter);
+
+        const validIndexes: number[] = [];
+
+        this.dataAll.labels.forEach((label, index) => {
+            const date = this.parseVNDate(label);
+
+            if (filter.period === 'year' && filter.value) {
+                if (date.getFullYear() === filter.value) {
+                    validIndexes.push(index);
+                }
+            } else if (filter.period === 'quarter' && filter.value) {
+                const quarter = Math.floor(date.getMonth() / 3) + 1;
+                if (quarter === filter.value) {
+                    validIndexes.push(index);
+                }
+            } else if (filter.period === 'month' && filter.value) {
+                if (date.getMonth() + 1 === filter.value) {
+                    validIndexes.push(index);
+                }
+            } else if (filter.period === 'day' && filter.date) {
+                const selected = new Date(filter.date);
+                if (date.getFullYear() === selected.getFullYear() && date.getMonth() === selected.getMonth() && date.getDate() === selected.getDate()) {
+                    validIndexes.push(index);
+                }
+            }
+        });
+
+        return {
+            labels: validIndexes.map((i) => this.dataAll.labels[i]),
+            series: this.dataAll.series.map((s) => ({
+                ...s,
+                data: validIndexes.map((i) => s.data[i])
+            }))
+        };
     }
 }

@@ -7,6 +7,7 @@
     @if (showExport) {
         <ng-template #end>
             <p-button label="Xuất báo cáo" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+            <app-preview #previewCmp></app-preview>
         </ng-template>
     }
 </p-toolbar>

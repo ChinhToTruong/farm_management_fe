@@ -1,0 +1,59 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '90vw', height: '90vh' }"
+  styleClass="dialog-flex"
+  (onHide)="close()"
+>
+  <ng-template pTemplate="header">
+    <h2>{{ title }}</h2>
+  </ng-template>
+
+  <div class="dialog-body">
+    <!-- PDF -->
+    <ng-container *ngIf="!isExcel">
+      <iframe
+        *ngIf="pdfUrl"
+        [src]="pdfUrl"
+        width="100%"
+        height="100%"
+        style="border: none"
+      ></iframe>
+    </ng-container>
+
+    <!-- EXCEL -->
+    <ng-container *ngIf="isExcel">
+      <table class="excel-table">
+        <tr *ngFor="let row of excelData; let r = index">
+          <ng-container *ngIf="r === 0">
+            <th *ngFor="let cell of row">{{ cell }}</th>
+          </ng-container>
+
+          <ng-container *ngIf="r !== 0">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+          </ng-container>
+        </tr>
+      </table>
+    </ng-container>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <button
+        pButton
+        label="Tải xuống"
+        icon="pi pi-download"
+        (click)="download()"
+      ></button>
+
+      <button
+        pButton
+        label="Đóng"
+        icon="pi pi-times"
+        class="p-button-secondary ml-2.5"
+        (click)="close()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

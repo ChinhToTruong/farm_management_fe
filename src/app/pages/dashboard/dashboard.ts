@@ -34,7 +34,7 @@ export class Dashboard implements OnInit {
         });
     }
     pieData: CommonChartInput = {
-        labels: ['05/01', '06/01', '07/01'],
+        labels: ['05/01/2026', '06/01/2026', '07/01/2026'],
         series: [
             { name: 'Hoàn thành', data: [2, 1, 0], tension: 0.4 },
             { name: 'Chờ thực hiện', data: [1, 0, 1], tension: 0.4 },
@@ -42,7 +42,7 @@ export class Dashboard implements OnInit {
         ]
     };
     pieDataMock: CommonChartInput = {
-        labels: ['05/01', '06/01', '07/01', '08/01', '09/01', '10/01', '11/01'],
+        labels: ['05/01/2026', '06/01/2026', '07/01/2026', '08/01/2026', '09/01/2026', '10/01/2026', '11/01/2026'],
         series: [
             { name: 'Bò', data: [8, 6, 3, 5, 3, 4, 5], tension: 0.4 },
             { name: 'Gà', data: [3, 2, 4, 9, 4, 7, 5], tension: 0.4 },

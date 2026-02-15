@@ -1,0 +1,49 @@
+.excel-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.excel-table th,
+.excel-table td {
+  border: 1px solid #ddd;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
+.excel-table th {
+  background: #f4f6f8;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+/* Dialog flex layout */
+.p-dialog.dialog-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.p-dialog.dialog-flex .p-dialog-header {
+  flex: 0 0 auto;
+}
+
+/* Content (KHÔNG scroll ở đây) */
+.p-dialog.dialog-flex .p-dialog-content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Body thật sự scroll */
+.dialog-body {
+  height: 68vh;
+  overflow: auto;
+  padding: 1rem;
+}
+
+/* Footer dính đáy */
+.p-dialog.dialog-flex .p-dialog-footer {
+  flex: 0 0 auto;
+  border-top: 1px solid #e5e7eb;
+  background: #fff;
+}
