@@ -47,7 +47,7 @@ export abstract class BaseService<T> {
         protected http: HttpClient,
         url: string
     ) {
-        this.baseUrl = `http://localhost:8080/${url}`;
+        this.baseUrl = `http://103.101.161.248:8085/${url}`;
     }
     checkRole() {
         const user = JSON.parse(localStorage.getItem('user') || '{}');

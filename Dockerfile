@@ -9,7 +9,7 @@ RUN yarn build
 FROM nginx:1.25.2-bookworm-perl
 WORKDIR /etc/nginx
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /usr/src/app/dist/sakai-ng /usr/share/nginx/html/
+COPY --from=build /usr/src/app/dist/sakai-ng/browser /usr/share/nginx/html/
 
 RUN mkdir -p /var/cache/nginx/client_temp && \
     mkdir -p /var/cache/nginx/proxy_temp && \
