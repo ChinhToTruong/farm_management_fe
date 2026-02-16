@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+.husky
+_mock
+build
+dist
+.dockerignore
+**/.git
+**/.DS_Store
+**/node_modules
