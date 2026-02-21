@@ -10,6 +10,8 @@ import { CropSeasonDetail } from '@/pages/crop-season/crop-season-detail/crop-se
 import { LocationType } from '@/commons/type/location';
 import { CropSeasonService } from '@/pages/service/crop-season.service';
 import { LocationService } from '@/pages/service/location.service';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 export interface CropSeason {
@@ -52,7 +54,11 @@ export const CROP_SEASON_STATUS_LABEL: Record<
     imports: [
         AppTable,
         Dialog,
-        CropSeasonDetail
+        CropSeasonDetail,
+        ConfirmDialogModule
+    ],
+    providers: [
+        ConfirmationService
     ],
   templateUrl: './crop-season-list.html',
   styleUrl: './crop-season-list.scss',
@@ -89,8 +95,7 @@ export class CropSeasonList extends BaseTableService<CropSeason> implements OnIn
 
 
     selectionChange(item: any[]) {
-        this.toast.success("heeelllo")
-        console.log("chay roi ne");
+
     }
 
     onNew() {

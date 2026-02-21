@@ -25,7 +25,7 @@ export class Test extends BaseTableService<User> implements OnInit {
     columns!: Column[];
     total: number = 100;
 
-    
+
     message = inject(MessageService)
 
     constructor(protected userService: UserService) {
@@ -89,8 +89,7 @@ export class Test extends BaseTableService<User> implements OnInit {
     }
 
     selectionChange(item: any[]){
-        this.toast.success("heeelllo")
-        console.log("chay roi ne");
+
     }
 
     filter(){

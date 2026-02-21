@@ -13,13 +13,20 @@ import { itemColumns } from '@/pages/item/common/constants';
 import { LocationService } from '@/pages/service/location.service';
 import { CategoryService } from '@/pages/service/category.service';
 import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-item-list',
     imports: [
         AppTable,
         Dialog,
-        ItemDetail
+        ItemDetail,
+        ConfirmDialog,
+        ConfirmDialogModule
+    ],
+    providers: [
+        ConfirmationService
     ],
   templateUrl: './item-list.html',
   styleUrl: './item-list.scss',

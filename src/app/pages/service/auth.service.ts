@@ -3,10 +3,11 @@ import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ResponseData } from './base.service';
 import { NotificationService } from '@/pages/service/notification.service';
+import { enviroment } from '../../../enviroments/enviroment';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-    private apiUrl = 'http://localhost:8080'; // API backend
+    private apiUrl = `${enviroment.baseUrl}`; // API backend
     private currentUserSubject = new BehaviorSubject<any>(null);
     private socketService =  inject(NotificationService)
 

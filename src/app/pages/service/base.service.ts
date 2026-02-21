@@ -1,6 +1,7 @@
 import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { enviroment } from '../../../enviroments/enviroment';
 
 export interface ResponseData<T> {
     message: string;
@@ -47,7 +48,7 @@ export abstract class BaseService<T> {
         protected http: HttpClient,
         url: string
     ) {
-        this.baseUrl = `http://103.101.161.248:8085/${url}`;
+        this.baseUrl = `${enviroment.baseUrl}/${url}`;
     }
     checkRole() {
         const user = JSON.parse(localStorage.getItem('user') || '{}');

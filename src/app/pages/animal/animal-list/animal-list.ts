@@ -13,13 +13,20 @@ import { ANIMAL_STATUS_LABEL, AnimalService, AnimalType } from '@/pages/service/
 import { AnimalDetail } from '@/pages/animal/animal-detail/animal-detail';
 import { col } from '@/pages/animal/commons/constants';
 import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-animal-list',
     imports: [
         AppTable,
         Dialog,
-        AnimalDetail
+        AnimalDetail,
+        ConfirmDialog,
+        ConfirmDialogModule
+    ],
+    providers: [
+        ConfirmationService
     ],
   templateUrl: './animal-list.html',
   styleUrl: './animal-list.scss',

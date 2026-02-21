@@ -12,6 +12,8 @@ import { col } from './commons/constants';
 import { SearchRequest } from '@/pages/service/base.service';
 import { MOCK_USERS } from '@/pages/users/user-list/commons/mock-data';
 import { Location } from '@angular/common';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 
 @Component({
@@ -19,11 +21,13 @@ import { Location } from '@angular/common';
     imports: [
         AppTable,
         Dialog,
-        UserForm
+        UserForm,
+        ConfirmDialog,
+        ConfirmDialogModule
     ],
     templateUrl: './user-list.html',
     styleUrl: './user-list.scss',
-    providers: [DialogService],
+    providers: [DialogService, ConfirmationService],
 })
 export class UserList extends BaseTableService<any> implements OnInit {
     title!: string;
@@ -50,8 +54,7 @@ export class UserList extends BaseTableService<any> implements OnInit {
 
 
     selectionChange(item: any[]) {
-        this.toast.success("heeelllo")
-        console.log("chay roi ne");
+
     }
 
     onNew() {

@@ -13,6 +13,8 @@ import { CropSeason } from '@/pages/crop-season/crop-season-list/crop-season-lis
 import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
 import { CropSeasonService } from '@/pages/service/crop-season.service';
 import { LocationService } from '@/pages/service/location.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 
 export type PlantStatus = 'GROWING' | 'HARVESTED' | 'FAILD';
@@ -28,7 +30,11 @@ export const PLANT_STATUS_LABEL: Record<PlantStatus, string> = {
     imports: [
         AppTable,
         Dialog,
-        PlantDetail
+        PlantDetail,
+        ConfirmDialogModule
+    ],
+    providers: [
+        ConfirmationService
     ],
   templateUrl: './plant-list.html',
   styleUrl: './plant-list.scss',

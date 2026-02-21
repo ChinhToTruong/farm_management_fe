@@ -53,7 +53,7 @@ export const LOCATION_TYPE_LABEL: Record<string, string> = {
         ToolbarModule,
         TooltipModule,
         AppTable,
-        LocationDetail
+        LocationDetail,
     ],
   templateUrl: './location.html',
   styleUrl: './location.scss',

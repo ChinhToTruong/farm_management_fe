@@ -16,13 +16,19 @@ import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
 import { UserService } from '@/pages/service/user.service';
 import { PlantService } from '@/pages/service/plant.service';
 import { AnimalService } from '@/pages/service/animal.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-vaccination-list',
     imports: [
         AppTable,
         Dialog,
-        VaccinationDetail
+        VaccinationDetail,
+        ConfirmDialogModule
+    ],
+    providers: [
+        ConfirmationService
     ],
   templateUrl: './vaccination-list.html',
   styleUrl: './vaccination-list.scss',

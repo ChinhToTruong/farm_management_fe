@@ -9,13 +9,19 @@ import { BaseTableService } from '@/pages/service/base.table.service';
 import { Category, CategoryDetail } from '@/pages/category/category-detail/category-detail';
 import { CategoryService } from '@/pages/service/category.service';
 import { categoryColumns } from '@/pages/category/common/constants';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-category-list',
     imports: [
         AppTable,
         Dialog,
-        CategoryDetail
+        CategoryDetail,
+        ConfirmDialogModule
+    ],
+    providers: [
+        ConfirmationService
     ],
   templateUrl: './category-list.html',
   styleUrl: './category-list.scss',

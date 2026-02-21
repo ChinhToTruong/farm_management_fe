@@ -4,59 +4,12 @@ import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 import SockJS from 'sockjs-client';
 import { ToastService } from '@/pages/service/toast.service';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { enviroment } from '../../../enviroments/enviroment';
 
 
 
 @Injectable({providedIn: 'root'})
 export class NotificationService {
-
-    // private toastService = inject(ToastService);
-    // private zone = inject(NgZone);
-    //
-    // private notification$ = new ReplaySubject<any>(1);
-    // private es?: EventSource;
-    // private currentUserId?: number;
-    //
-    // connect(userId: number): Observable<any> {
-    //     if (this.es) {
-    //         return this.notification$.asObservable();
-    //     }
-    //
-    //     this.currentUserId = userId;
-    //
-    //     this.es = new EventSource(
-    //         `http://localhost:8080/notifications/stream?userId=${userId}`
-    //     );
-    //
-    //     this.es.onmessage = (event) => {
-    //         this.zone.run(() => {
-    //             const data = JSON.parse(event.data);
-    //
-    //             // 🔔 toast global
-    //             this.toastService.info(data.message ?? 'Bạn có thông báo mới');
-    //
-    //             this.notification$.next(data);
-    //         });
-    //     };
-    //
-    //     this.es.onerror = () => {
-    //         this.disconnect();
-    //         setTimeout(() => this.reconnect(), 3000);
-    //     };
-    //
-    //     return this.notification$.asObservable();
-    // }
-    //
-    // reconnect() {
-    //     if (this.currentUserId) {
-    //         this.connect(this.currentUserId);
-    //     }
-    // }
-    //
-    // disconnect() {
-    //     this.es?.close();
-    //     this.es = undefined;
-    // }
 
     private client?: Client;
 
@@ -71,7 +24,7 @@ export class NotificationService {
         const token = localStorage.getItem('token');
 
         this.client = new Client({
-            webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+            webSocketFactory: () => new SockJS(`${enviroment.baseUrl}/ws`),
             connectHeaders: {
                 Authorization: `Bearer ${token}`
             },

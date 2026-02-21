@@ -19,13 +19,19 @@ import { AnimalService } from '@/pages/service/animal.service';
 import { PlantService } from '@/pages/service/plant.service';
 import { ItemService } from '@/pages/service/item.service';
 import { BASE_SEARCH_REQUEST } from '@/pages/crop-season/commons/constants';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-inventory-transaction-list',
     imports: [
         AppTable,
         Dialog,
-        InventoryTransactionDetail
+        InventoryTransactionDetail,
+        ConfirmDialogModule
+    ],
+    providers: [
+        ConfirmationService
     ],
   templateUrl: './inventory-transaction-list.html',
   styleUrl: './inventory-transaction-list.scss',

@@ -1,10 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { enviroment } from '../../../enviroments/enviroment';
 
 @Injectable({providedIn: 'root'})
 export class FileService {
-    protected baseUrl: string = "http://localhost:8080/files";
+    protected baseUrl: string = `${enviroment.baseUrl}/files`;
 
     http = inject(HttpClient)
 

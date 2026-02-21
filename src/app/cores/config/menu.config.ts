@@ -10,90 +10,42 @@ export interface RoleMenuItem extends MenuItem {
 
 export const menuConfig : RoleMenuItem[] =  [
     {
-        label: 'Trang chủ', icon: 'pi pi-fw pi-home', routerLink: ['/'], roles: ['ADMIN', 'FARMER', 'ENGINEER']
+        label: 'Trang chủ', icon: 'pi pi-fw pi-home', routerLink: ['/'], roles: ['ADMIN', 'ENGINEER']
     },
     {
-        label: 'Quản lý người dùng', icon: 'pi pi-fw pi-users', routerLink: ['/users'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý người dùng', icon: 'pi pi-fw pi-users', routerLink: ['/users'], roles: ['ADMIN']
     },
     {
-        label: 'Quản lý khu vực', icon: 'pi pi-fw pi-map', routerLink: ['/locations'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý khu vực', icon: 'pi pi-fw pi-map', routerLink: ['/locations'], roles: ['ADMIN']
     },
     {
-        label: 'Quản lý vụ mùa', icon: 'pi pi-fw pi-calendar', routerLink: ['/crop-seasons'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý vụ mùa', icon: 'pi pi-fw pi-calendar', routerLink: ['/crop-seasons'], roles: ['ADMIN']
     },
     {
-        label: 'Quản lý cây trồng', icon: 'tw-icon tw-plant', routerLink: ['/plants'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý cây trồng', icon: 'tw-icon tw-plant', routerLink: ['/plants'], roles: ['FARMER', 'ADMIN', 'ENGINEER']
     },
     {
-        label: 'Quản lý cây vật nuôi', icon: 'tw-icon tw-animal', routerLink: ['/animals'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý cây vật nuôi', icon: 'tw-icon tw-animal', routerLink: ['/animals'], roles: ['FARMER', 'ADMIN', 'ENGINEER']
     },
     {
-        label: 'Quản lý công việc hằng ngày', icon: 'pi pi-fw pi-clipboard', routerLink: ['/work-diaries'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý công việc hằng ngày', icon: 'pi pi-fw pi-clipboard', routerLink: ['/work-diaries'], roles: ['FARMER', 'ADMIN', 'ENGINEER']
     },
     {
-        label: 'Quản lý tiêm phòng', icon: 'pi pi-fw pi-heart', routerLink: ['/vaccination'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý tiêm phòng', icon: 'pi pi-fw pi-heart', routerLink: ['/vaccination'], roles: ['FARMER', 'ADMIN', 'ENGINEER']
     },
     {
-        label: 'Quản lý kho', icon: 'pi pi-fw pi-warehouse', routerLink: ['/categories'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý kho', icon: 'pi pi-fw pi-warehouse', routerLink: ['/categories'], roles: ['ADMIN']
     },
     {
-        label: 'Quản lý vật liệu', icon: 'pi pi-fw pi-box', routerLink: ['/items'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý vật liệu', icon: 'pi pi-fw pi-box', routerLink: ['/items'], roles: ['ADMIN']
     },
     {
-        label: 'Quản lý nhập/xuất kho', icon: 'pi pi-fw pi-arrow-right-arrow-left', routerLink: ['/inventory-transactions'], roles: ['FARMER', 'ADMIN']
+        label: 'Quản lý nhập/xuất kho', icon: 'pi pi-fw pi-arrow-right-arrow-left', routerLink: ['/inventory-transactions'], roles: ['ADMIN']
     },
     {
-        label: 'Chat bot', icon: 'pi pi-fw pi-comments', routerLink: ['/chat-bot'], roles: ['FARMER', 'ADMIN']
+        label: 'Chat bot', icon: 'pi pi-fw pi-comments', routerLink: ['/chat-bot'], roles: ['FARMER', 'ADMIN', 'ENGINEER']
     },
 
-    {
-        label: 'Quản lý trang trại',
-        icon: 'pi pi-fw pi-briefcase',
-        roles: ['ADMIN', 'FARMER'],
-        items: [
-            {
-                label: 'Landing',
-                icon: 'pi pi-fw pi-globe',
-                routerLink: ['/landing']
-            },
-            {
-                label: 'Auth',
-                icon: 'pi pi-fw pi-user',
-                items: [
-                    {
-                        label: 'Login',
-                        icon: 'pi pi-fw pi-sign-in',
-                        routerLink: ['/auth/login']
-                    },
-                    {
-                        label: 'Error',
-                        icon: 'pi pi-fw pi-times-circle',
-                        routerLink: ['/auth/error']
-                    },
-                    {
-                        label: 'Access Denied',
-                        icon: 'pi pi-fw pi-lock',
-                        routerLink: ['/auth/access']
-                    }
-                ]
-            },
-            {
-                label: 'Crud',
-                icon: 'pi pi-fw pi-pencil',
-                routerLink: ['/pages/crud']
-            },
-            {
-                label: 'Not Found',
-                icon: 'pi pi-fw pi-exclamation-circle',
-                routerLink: ['/pages/notfound']
-            },
-            {
-                label: 'Empty',
-                icon: 'pi pi-fw pi-circle-off',
-                routerLink: ['/pages/empty']
-            }
-        ]
-    },
     {
         label: 'Hierarchy',
         items: [
